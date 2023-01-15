@@ -62,7 +62,8 @@ export function Main() {
   if (isLoading) return <div>Load</div>
   if (!posts.length) {
     return (
-      <div>
+      <div className="text-center">
+        <h4>{`По вашему поиску найдено ${posts.length} ${getStrNumberSearch(posts.length)}`}</h4>
         <h5>is empty</h5>
       </div>
     )
