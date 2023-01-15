@@ -1,17 +1,64 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import './index.css'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
+import { Provider } from 'react-redux'
+import App from './App'
+import { FormRegistration } from './components/FormRegistration/FormRegistration'
+import { FormAuthorization } from './components/FormAuthorization/FormAuthorization'
+import { Main } from './components/Main/Main'
+import { UserInfo } from './components/UserInfo/UserInfo'
+import { store } from './redux/store'
+import { CartPage } from './components/CartPage/CartPage'
+import { FavoritesPage } from './components/FavoritesPage/FavoritesPage'
+// import { SearchPage } from './components/Search/Search'
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const queryClient = new QueryClient()
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+    children: [
+      {
+        index: true,
+        element: <Main />,
+      },
+      {
+        path: 'signup/',
+        element: <FormRegistration />,
+      },
+      {
+        path: 'signin/',
+        element: <FormAuthorization />,
+      },
+      {
+        path: 'user/:id',
+        element: <UserInfo />,
+      },
+      {
+        path: 'cart/:id',
+        element: <CartPage />,
+      },
+      {
+        path: 'favorites/',
+        element: <FavoritesPage />,
+      },
+    ],
+  },
+])
+
+const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </Provider>
+  </React.StrictMode>,
+)

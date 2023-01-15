@@ -1,0 +1,12 @@
+.pageAuth {
+    display: flex; 
+   height: 100vh;
+   width: 100vw;
+    background-image: url(./1613049809_204-p-oranzhevii-fon-s-printom-256.jpg);
+    object-fit: cover; 
+}
+
+.formikForm {
+    display: flex; 
+    width: 60vw;
+}

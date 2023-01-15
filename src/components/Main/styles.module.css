@@ -1,0 +1,11 @@
+.pageMain {
+
+    height: 100%;
+    width: 100%;
+    background-image: url(./1613049809_204-p-oranzhevii-fon-s-printom-256.jpg);
+    object-fit: cover; 
+}
+
+.pageCard {
+    background-color: rgb(243, 243, 219);
+}
