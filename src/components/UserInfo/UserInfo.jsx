@@ -55,6 +55,7 @@ export function UserInfo() {
             <div className="card" style={{ width: '18rem', borderRadius: '20px' }}>
               <div className="card-body">
                 <h5 className="card-title">Моё имя и фамилия</h5>
+                <hr />
                 <p className="card-text">{data.name}</p>
               </div>
             </div>
@@ -63,6 +64,7 @@ export function UserInfo() {
             <div className="card" style={{ width: '18rem', borderRadius: '20px' }}>
               <div className="card-body">
                 <h5 className="card-title">Мой id</h5>
+                <hr />
                 <p className="card-text">{data._id}</p>
               </div>
             </div>
@@ -71,6 +73,7 @@ export function UserInfo() {
             <div className="card" style={{ width: '18rem', borderRadius: '20px' }}>
               <div className="card-body">
                 <h5 className="card-title">Мой Email</h5>
+                <hr />
                 <p className="card-text">{data.email}</p>
               </div>
             </div>
@@ -79,6 +82,7 @@ export function UserInfo() {
             <div className="card" style={{ width: '18rem', borderRadius: '20px' }}>
               <div className="card-body">
                 <h5 className="card-title">Обо мне</h5>
+                <hr />
                 <p className="card-text">{data.about}</p>
               </div>
             </div>
@@ -87,6 +91,7 @@ export function UserInfo() {
             <div className="card" style={{ width: '18rem', borderRadius: '20px' }}>
               <div className="card-body">
                 <h5 className="card-title">Моя группа</h5>
+                <hr />
                 <p className="card-text">{data.group}</p>
               </div>
             </div>
@@ -95,6 +100,7 @@ export function UserInfo() {
             <div className="card" style={{ width: '18rem', borderRadius: '20px' }}>
               <div className="card-body">
                 <h5 className="card-title">Статус пользователся</h5>
+                <hr />
                 <p className="card-text">Обычный пользователь</p>
               </div>
             </div>

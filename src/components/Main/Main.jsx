@@ -46,6 +46,19 @@ export function Main() {
     return Math.round(objProduct.price / ((100 - objProduct.discount) / 100))
   }
 
+  function getStrNumberSearch(value) {
+    const getRemainder = value % 10
+
+    switch (true) {
+      case ((getRemainder) === 1):
+        return 'товар'
+      case (getRemainder && getRemainder < 5):
+        return 'товара'
+      default:
+        return 'товаров'
+    }
+  }
+
   if (isLoading) return <div>Load</div>
   if (!posts.length) {
     return (
@@ -57,6 +70,13 @@ export function Main() {
 
   return (
     <div className={formStyles.pageMain}>
+      {search
+        ? (
+          <div className="text-center">
+            <h4>{`По вашему поиску найдено ${posts.length} ${getStrNumberSearch(posts.length)}`}</h4>
+          </div>
+        )
+        : <div /> }
       <div className="container d-flex flex-wrap pt-2 justify-content-between">
         {posts.map((post) => (
 
