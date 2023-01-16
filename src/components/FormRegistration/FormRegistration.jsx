@@ -12,21 +12,23 @@ export function FormRegistration() {
 
   const REQUIRED_ERROR_MESSAGE = 'Пожалуйста заполните поле'
 
+  const postValuesRegistration = (values) => {
+    const { group, ...rest } = values
+    return api.registration(values)
+      .then((data) => {
+        if (data) {
+          sessionStorage.setItem('myMail', rest.email)
+          sessionStorage.setItem('myPassword', rest.password)
+          sessionStorage.setItem('success', true)
+          navigate('/signin')
+        } else {
+          navigate('/signup')
+        }
+      })
+  }
+
   const { mutate } = useMutation({
-    mutationFn: (values) => {
-      const { group, ...rest } = values
-      return api.registration(values)
-        .then((data) => {
-          if (data) {
-            sessionStorage.setItem('myMail', rest.email)
-            sessionStorage.setItem('myPassword', rest.password)
-            sessionStorage.setItem('success', true)
-            navigate('/signin')
-          } else {
-            navigate('/signup')
-          }
-        })
-    },
+    mutationFn: postValuesRegistration,
   })
 
   return (

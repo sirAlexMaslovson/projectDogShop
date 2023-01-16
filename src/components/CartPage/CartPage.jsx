@@ -98,6 +98,7 @@ export function CartPage() {
                     className="form-check-input"
                     type="checkbox"
                     onChange={() => dispatch(addAllProductsBay())}
+                    checked={isAllProductsInPrice()}
                     id="flexCheckDefault"
                   />
                   <label className="form-check-label" htmlFor="flexCheckDefault">
@@ -111,6 +112,7 @@ export function CartPage() {
                     className="form-check-input"
                     type="checkbox"
                     onChange={() => dispatch(deleteAllProductsBay())}
+                    checked={isAllProductsInPrice()}
                     id="flexCheckDefault"
                   />
                   <label className="form-check-label" htmlFor="flexCheckDefault">
