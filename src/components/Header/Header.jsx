@@ -6,6 +6,7 @@ import companyLogo from './kisspng-logo-dog-la-baule-escoublac-petplate-brand-5b
 import formStyles from './modal.module.css'
 import { addSearch, nullSearch } from '../../redux/actionsCreators/searchAC'
 import { useDebonce } from '../hooks/useDebonce'
+import { deleteSort } from '../../redux/actionsCreators/methodSortAC'
 // import { useDebonce } from '../hooks/useDebonce'
 
 export function Header() {
@@ -38,6 +39,11 @@ export function Header() {
     })
   }
 
+  const getMainPage = () => {
+    dispatch(nullSearch())
+    dispatch(deleteSort())
+  }
+
   return (
     <header>
       <div
@@ -47,7 +53,7 @@ export function Header() {
           className="d-flex justify-content-start align-items-center"
           style={{ width: '65%' }}
         >
-          <Link to="/" onClick={dispatch(nullSearch())} style={{ width: '20%' }}>
+          <Link to="/" onClick={() => getMainPage} style={{ width: '20%' }}>
             <img src={companyLogo} style={{ width: '40%' }} alt="logo" />
           </Link>
 
@@ -81,6 +87,7 @@ export function Header() {
 
             <ul className="nav justify-content-end align-items-center">
               <li className="nav-item position-relative">
+
                 <button
                   type="button"
                   onClick={clickHandlerUser}
@@ -88,6 +95,7 @@ export function Header() {
                 >
                   {localStorage.getItem('myName')}
                 </button>
+
               </li>
             </ul>
           </>

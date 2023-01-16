@@ -1,7 +1,10 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-underscore-dangle */
 import { useQuery } from '@tanstack/react-query'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import { deleteSort } from '../../redux/actionsCreators/methodSortAC'
+import { nullSearch } from '../../redux/actionsCreators/searchAC'
 import { deleteToken } from '../../redux/actionsCreators/tokenAC'
 import { api } from '../helpers/Api'
 import formStyles from './styles.module.css'
@@ -27,6 +30,8 @@ export function UserInfo() {
   const clickHandlerMain = (e) => {
     if (e.target === e.currentTarget) {
       navigate('/')
+      dispatch(nullSearch())
+      dispatch(deleteSort())
     }
   }
 
@@ -39,7 +44,6 @@ export function UserInfo() {
 
   return (
     <div className={formStyles.pageInfo}>
-
       <div className="container d-flex justify-content-around pt-5">
         <Link to="/"><button type="button" onClick={clickHandlerMain} className="btn btn-primary">На главную</button></Link>
         <button type="button" onClick={clickHandlerOut} className="btn btn-danger">Выйти из аккаунта</button>

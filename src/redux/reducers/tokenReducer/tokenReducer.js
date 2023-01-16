@@ -11,7 +11,7 @@ export const tokenReducer = (state = initialState.TOKEN, action) => {
       return action.payload
     }
     case DELETE_TOKEN:
-      return []
+      return ''
     default:
       return state
   }

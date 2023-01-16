@@ -1,14 +1,18 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-underscore-dangle */
 import { useQuery } from '@tanstack/react-query'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { FaShoppingBasket } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import { api } from '../helpers/Api'
 import formStyles from './styles.module.css'
-import bageNew from './5a5a8a1314d8c4188e0b08e1.png'
+// import bageNew from './5a5a8a1314d8c4188e0b08e1.png'
 import bageSale from './sales.png'
 import { addProductsInCart, deleteProductsFromCartAC } from '../../redux/actionsCreators/cartAC'
+import {
+  deleteSort, sortByABC, sortByCost, sortByDiscount,
+} from '../../redux/actionsCreators/methodSortAC'
 
 export const ALL_PRODUCTS = 'all_products'
 
@@ -20,6 +24,8 @@ export function Main() {
   const TOKEN = useSelector((store) => store.TOKEN)
 
   const search = useSelector((store) => store.search)
+
+  const methodSort = useSelector((store) => store.methodSorting)
 
   const countId = (id) => {
     const objId = cart.find((post) => post.id === id)
@@ -37,7 +43,7 @@ export function Main() {
   }, [])
 
   const { data: posts, isLoading } = useQuery({
-    queryKey: [ALL_PRODUCTS, search],
+    queryKey: [ALL_PRODUCTS, search, methodSort],
     queryFn: () => api.getProductsSearchQuery(search),
   })
 
@@ -69,6 +75,19 @@ export function Main() {
     )
   }
 
+  const newArrayPosts = () => {
+    switch (methodSort) {
+      case 'sort by cost':
+        return posts.sort((a, b) => b.price - a.price)
+      case 'sort by ABC':
+        return posts.sort((a, b) => a.name.localeCompare(b.name))
+      case 'sort by discount':
+        return posts.sort((a, b) => b.discount - a.discount)
+      default:
+        return posts
+    }
+  }
+
   return (
     <div className={formStyles.pageMain}>
       {search
@@ -78,13 +97,27 @@ export function Main() {
           </div>
         )
         : <div /> }
+
+      <nav className="navbar navbar-expand-lg bg-body-tertiary">
+        <div className="navbar-nav d-flex justify-content-start align-items-center">
+          <h3 className="navbar-brand">Сортировка</h3>
+          <h6 className="nav-link" aria-current="page"><Link to="/" onClick={() => dispatch(sortByABC())}>По алфавиту</Link></h6>
+          <h6>/</h6>
+          <h6 className="nav-link"><Link to="/" onClick={() => dispatch(sortByCost())}>По стоимости</Link></h6>
+          <h6>/</h6>
+          <h6 className="nav-link"><Link to="/" onClick={() => dispatch(sortByDiscount())}>По скидке</Link></h6>
+          <h6>/</h6>
+          <h6 className="nav-link"><Link to="/" onClick={() => dispatch(deleteSort())}>Без фильтра</Link></h6>
+        </div>
+      </nav>
+
       <div className="container d-flex flex-wrap pt-2 justify-content-between">
-        {posts.map((post) => (
+        {newArrayPosts().map((post) => (
 
           <div className={`card m-3 ${formStyles.pageCard}`} style={{ width: '18rem' }} key={post._id}>
-            {post.tags.length > 0 ? (<img src={bageNew} style={{ position: 'absolute', width: '25%' }} alt="NEW" />) : (<div />)}
+
             {post.discount > 0
-              ? (<img src={bageSale} style={{ position: 'absolute', width: '25%', right: '0' }} alt="NEW" />)
+              ? (<img src={bageSale} style={{ position: 'absolute', width: '25%', left: '0' }} alt="NEW" />)
               : (<div />)}
             <img src={post.pictures} className="card-img-top" alt={post.name} />
             <div className="card-body">
