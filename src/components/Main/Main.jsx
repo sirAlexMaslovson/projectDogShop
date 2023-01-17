@@ -17,8 +17,6 @@ import {
 export const ALL_PRODUCTS = 'all_products'
 
 export function Main() {
-  console.log('render main')
-
   const dispatch = useDispatch()
 
   const cart = useSelector((store) => store.cart)
@@ -41,6 +39,8 @@ export function Main() {
   useEffect(() => {
     if (!TOKEN.length) {
       navigate('/signin')
+    } else {
+      api.setNewToken(TOKEN)
     }
   }, [])
 
@@ -121,9 +121,9 @@ export function Main() {
             {post.discount > 0
               ? (<img src={bageSale} style={{ position: 'absolute', width: '25%', left: '0' }} alt="NEW" />)
               : (<div />)}
-            <img src={post.pictures} className="card-img-top" alt={post.name} />
+            <img src={post.pictures} style={{ height: '18rem', objectFit: 'cover' }} alt={post.name} />
             <div className="card-body">
-              <h5 className="card-title text-center">{post.name}</h5>
+              <h5 className="card-title text-center text-success">{post.name}</h5>
             </div>
             <div className="d-flex justify-content-center">
               <h5 className="card-text text-center p-3">

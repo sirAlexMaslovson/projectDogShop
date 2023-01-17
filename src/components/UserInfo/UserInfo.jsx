@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-underscore-dangle */
 import { useQuery } from '@tanstack/react-query'
-import { useDispatch } from 'react-redux'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { deleteSort } from '../../redux/actionsCreators/methodSortAC'
 import { deleteMyUserInfo } from '../../redux/actionsCreators/myUserReducerAC'
@@ -17,12 +18,17 @@ export function UserInfo() {
 
   const dispatch = useDispatch()
 
+  const TOKEN = useSelector((store) => store.TOKEN)
+
+  const myGroup = useSelector((store) => store.myUser.group)
+
+  useEffect(() => {
+    api.setNewToken(TOKEN)
+    api.setNewGroup(myGroup)
+  }, [])
+
   const clickHandlerOut = (e) => {
     if (e.target === e.currentTarget) {
-      localStorage.removeItem('myToken')
-      localStorage.removeItem('myGroup')
-      localStorage.removeItem('myId')
-      localStorage.removeItem('myName')
       dispatch(deleteToken())
       dispatch(deleteMyUserInfo())
       navigate('/signin')
@@ -37,12 +43,13 @@ export function UserInfo() {
     }
   }
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: [USER_INFO],
     queryFn: api.getUserInfo,
   })
 
   if (isLoading) return <div>Load</div>
+  if (isError) return <div>ошибка авторизации</div>
 
   return (
     <div className={formStyles.pageInfo}>

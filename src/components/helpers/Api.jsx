@@ -1,11 +1,16 @@
 class Api {
   constructor(api) {
     this.baseUrl = api.baseUrl
-    this.token = api.token
+    this.token = undefined
+    this.group = undefined
   }
 
   setNewToken(newToken) {
     this.token = newToken
+  }
+
+  setNewGroup(newGroup) {
+    this.group = newGroup
   }
 
   registration(values) {
@@ -37,14 +42,6 @@ class Api {
       .then((response) => response.json())
       .then((datas) => {
         if (datas.data) {
-          // eslint-disable-next-line no-underscore-dangle
-          localStorage.setItem('myId', datas.data._id)
-          localStorage.setItem('myToken', datas.token)
-          localStorage.setItem('myGroup', datas.data.group)
-          localStorage.setItem('myName', datas.data.name)
-          if (localStorage.getItem('myToken') === 'undefined') {
-            localStorage.removeItem('myToken')
-          }
           return datas
         }
         throw new Error(datas.message)
@@ -55,42 +52,39 @@ class Api {
   getAllProducts = () => fetch(`${this.baseUrl}/products`, {
     method: 'GET',
     headers: {
-      authorization: `Bearer ${localStorage.getItem('myToken')}`,
+      authorization: `Bearer ${this.token}`,
       'Content-Type': 'application/json',
     },
   }).then((response) => response.json())
     .then((data) => data.products)
 
-  getUserInfo = () => fetch(`${this.baseUrl}/v2/${localStorage.getItem('myGroup')}/users/${localStorage.getItem('myId')}`, {
+  getUserInfo = () => fetch(`${this.baseUrl}/v2/${this.group}/users/me`, {
     method: 'GET',
     headers: {
-      authorization: `Bearer ${localStorage.getItem('myToken')}`,
+      authorization: `Bearer ${this.token}`,
       'Content-Type': 'application/json',
     },
   }).then((response) => response.json())
-    .then((data) => data)
 
   // eslint-disable-next-line class-methods-use-this
   getProductsByIds(ids) {
     return Promise.all(ids.map((id) => fetch(`https://api.react-learning.ru/products/${id}`, {
       method: 'GET',
       headers: {
-        authorization: `Bearer ${localStorage.getItem('myToken')}`,
+        authorization: `Bearer ${this.token}`,
         'Content-Type': 'application/json',
       },
     })
-      .then((response) => response.json())
-      .then((data) => data)))
+      .then((response) => response.json())))
   }
 
   getProductsSearchQuery = (value) => fetch(`${this.baseUrl}/products/search?query=${value}`, {
     method: 'GET',
     headers: {
-      authorization: `Bearer ${localStorage.getItem('myToken')}`,
+      authorization: `Bearer ${this.token}`,
       'Content-Type': 'application/json',
     },
   }).then((response) => response.json())
-    .then((data) => data)
 }
 
 export const api = new Api({
