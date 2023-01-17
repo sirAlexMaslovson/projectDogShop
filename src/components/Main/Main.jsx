@@ -17,6 +17,8 @@ import {
 export const ALL_PRODUCTS = 'all_products'
 
 export function Main() {
+  console.log('render main')
+
   const dispatch = useDispatch()
 
   const cart = useSelector((store) => store.cart)
@@ -43,7 +45,7 @@ export function Main() {
   }, [])
 
   const { data: posts, isLoading } = useQuery({
-    queryKey: [ALL_PRODUCTS, search, methodSort],
+    queryKey: [ALL_PRODUCTS, search],
     queryFn: () => api.getProductsSearchQuery(search),
   })
 
@@ -78,11 +80,11 @@ export function Main() {
   const newArrayPosts = () => {
     switch (methodSort) {
       case 'sort by cost':
-        return posts.sort((a, b) => b.price - a.price)
+        return [...posts].sort((a, b) => b.price - a.price)
       case 'sort by ABC':
-        return posts.sort((a, b) => a.name.localeCompare(b.name))
+        return [...posts].sort((a, b) => a.name.localeCompare(b.name))
       case 'sort by discount':
-        return posts.sort((a, b) => b.discount - a.discount)
+        return [...posts].sort((a, b) => b.discount - a.discount)
       default:
         return posts
     }

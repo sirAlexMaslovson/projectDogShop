@@ -20,6 +20,8 @@ import basketEmpty from './z9324f852.png'
 export const PRODUCT_CART_KEY = ['PRODUCT_CART_KEY']
 
 export function CartPage() {
+  console.log('render cart')
+
   const cart = useSelector((store) => store.cart)
 
   const navigate = useNavigate()

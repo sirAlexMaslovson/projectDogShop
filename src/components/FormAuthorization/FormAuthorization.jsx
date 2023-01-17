@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux'
 import { api } from '../helpers/Api'
 import formStyles from './styles.module.css'
 import { addToken } from '../../redux/actionsCreators/tokenAC'
+import { addMyUserInfo } from '../../redux/actionsCreators/myUserReducerAC'
 
 export function FormAuthorization() {
   const dispatch = useDispatch()
@@ -37,7 +38,11 @@ export function FormAuthorization() {
   const isSuccess = sessionStorage.getItem('success')
 
   const postValuesAuthorization = (values) => api.authorization(values)
-    .then((data) => dispatch(addToken(data.token)))
+    .then((data) => {
+      const { token, ...rest } = data
+      dispatch(addToken(token))
+      dispatch(addMyUserInfo(rest.data))
+    })
     .then(() => sessionStorage.clear())
     .then(() => navigate('/'))
 

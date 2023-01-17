@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { deleteSort } from '../../redux/actionsCreators/methodSortAC'
+import { deleteMyUserInfo } from '../../redux/actionsCreators/myUserReducerAC'
 import { nullSearch } from '../../redux/actionsCreators/searchAC'
 import { deleteToken } from '../../redux/actionsCreators/tokenAC'
 import { api } from '../helpers/Api'
@@ -23,6 +24,7 @@ export function UserInfo() {
       localStorage.removeItem('myId')
       localStorage.removeItem('myName')
       dispatch(deleteToken())
+      dispatch(deleteMyUserInfo())
       navigate('/signin')
     }
   }

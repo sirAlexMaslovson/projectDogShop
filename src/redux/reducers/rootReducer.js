@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 import { cartReducer } from './cartReducer/cartReducer'
 import { methodSortReducer } from './methodSortReducer/methodSortReducer'
+import { myUserReducer } from './myUserReducer/myUserReducer'
 import { searchReducer } from './searhReducer/searhReducer'
 import { tokenReducer } from './tokenReducer/tokenReducer'
 
@@ -9,4 +10,5 @@ export const rootReducer = combineReducers({
   search: searchReducer,
   cart: cartReducer,
   methodSorting: methodSortReducer,
+  myUser: myUserReducer,
 })

@@ -15,8 +15,9 @@ export function FormRegistration() {
   const postValuesRegistration = (values) => {
     const { group, ...rest } = values
     return api.registration(values)
-      .then((data) => {
-        if (data) {
+      .then((datas) => {
+        if (datas) {
+          console.log(datas)
           sessionStorage.setItem('myMail', rest.email)
           sessionStorage.setItem('myPassword', rest.password)
           sessionStorage.setItem('success', true)

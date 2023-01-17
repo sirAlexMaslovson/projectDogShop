@@ -15,7 +15,7 @@ export const addProductsInCart = (id, count = 1) => ({
   payload: {
     id,
     count,
-    inBay: false,
+    inBay: true,
   },
 })
 

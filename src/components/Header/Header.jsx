@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { FaBoxOpen, FaHeart } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux/es/exports'
@@ -13,14 +14,14 @@ export function Header() {
   const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
   const cart = useSelector((store) => store.cart)
+  const myID = useSelector((store) => store.myUser._id)
+  const myName = useSelector((store) => store.myUser.name)
   const [searchInput, setSearchInput] = useState(() => searchParams.get('q') ?? '')
   const badge = cart.length
 
   const debouncedSearchValue = useDebonce(searchInput, 500)
 
   const dispatch = useDispatch()
-
-  const myID = localStorage.getItem('myId')
 
   const clickHandlerUser = (e) => {
     if (e.target === e.currentTarget) {
@@ -53,13 +54,13 @@ export function Header() {
           className="d-flex justify-content-start align-items-center"
           style={{ width: '65%' }}
         >
-          <Link to="/" onClick={() => getMainPage} style={{ width: '20%' }}>
+          <Link to="/" onClick={() => getMainPage()} style={{ width: '20%' }}>
             <img src={companyLogo} style={{ width: '40%' }} alt="logo" />
           </Link>
 
           <input value={searchInput} onChange={changeInputHandler} style={{ width: '100%' }} />
         </div>
-        {localStorage.getItem('myId') ? (
+        {myID ? (
           <>
             <Link to="/favorites">
               <div type="button" className="position-relative">
@@ -71,7 +72,7 @@ export function Header() {
               </div>
             </Link>
 
-            <Link to={`/cart/${localStorage.getItem('myId')}`}>
+            <Link to={`/cart/${myID}`}>
               <div type="button" className="position-relative">
                 <FaBoxOpen size="40" style={{ color: 'black' }} />
                 {badge > 0 ? (
@@ -93,7 +94,7 @@ export function Header() {
                   onClick={clickHandlerUser}
                   className="btn btn-warning"
                 >
-                  {localStorage.getItem('myName')}
+                  {myName}
                 </button>
 
               </li>

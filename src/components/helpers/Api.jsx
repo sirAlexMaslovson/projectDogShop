@@ -37,7 +37,6 @@ class Api {
       .then((response) => response.json())
       .then((datas) => {
         if (datas.data) {
-          console.log('Всё ОК')
           // eslint-disable-next-line no-underscore-dangle
           localStorage.setItem('myId', datas.data._id)
           localStorage.setItem('myToken', datas.token)
