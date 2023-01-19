@@ -25,7 +25,7 @@ export function Header() {
 
   const clickHandlerUser = (e) => {
     if (e.target === e.currentTarget) {
-      navigate(`/user/${myID}`)
+      navigate('/user')
     }
   }
 

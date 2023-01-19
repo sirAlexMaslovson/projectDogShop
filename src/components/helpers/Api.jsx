@@ -3,6 +3,7 @@ class Api {
     this.baseUrl = api.baseUrl
     this.token = undefined
     this.group = undefined
+    this.idCard = undefined
   }
 
   setNewToken(newToken) {
@@ -11,6 +12,10 @@ class Api {
 
   setNewGroup(newGroup) {
     this.group = newGroup
+  }
+
+  setNewIdCard(newIdCard) {
+    this.idCard = newIdCard
   }
 
   registration(values) {
@@ -67,16 +72,24 @@ class Api {
   }).then((response) => response.json())
 
   // eslint-disable-next-line class-methods-use-this
-  getProductsByIds(ids) {
-    return Promise.all(ids.map((id) => fetch(`https://api.react-learning.ru/products/${id}`, {
-      method: 'GET',
-      headers: {
-        authorization: `Bearer ${this.token}`,
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())))
-  }
+  getProductsByIds = (ids) => Promise.all(ids.map((id) => fetch(`https://api.react-learning.ru/products/${id}`, {
+    method: 'GET',
+    headers: {
+      authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())))
+
+  getUsersById = (ids) => Promise.all(ids.map((id) => fetch(`https://api.react-learning.ru/v2/${this.group}/users/${id}`, {
+    method: 'GET',
+    headers: {
+      authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => data.name)))
 
   getProductsSearchQuery = (value) => fetch(`${this.baseUrl}/products/search?query=${value}`, {
     method: 'GET',
@@ -85,6 +98,33 @@ class Api {
       'Content-Type': 'application/json',
     },
   }).then((response) => response.json())
+
+  getCardById = () => fetch(`${this.baseUrl}/products/${this.idCard}`, {
+    method: 'GET',
+    headers: {
+      authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    },
+  }).then((response) => response.json())
+
+  doCommentById = (id, value) => fetch(`https://api.react-learning.ru/products/review/${id}`, {
+    method: 'POST',
+    headers: {
+      authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(value),
+  })
+    .then((response) => response.json())
+    .then((datas) => {
+      console.log(datas)
+      if (datas.discount) {
+        return datas
+      }
+      console.log(datas.message)
+      throw new Error(datas.message)
+    })
+    .catch(alert)
 }
 
 export const api = new Api({

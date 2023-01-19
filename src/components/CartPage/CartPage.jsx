@@ -28,9 +28,11 @@ export function CartPage() {
 
   const getCartItemQueryKey = (cartItemsId) => PRODUCT_CART_KEY.concat(cartItemsId)
 
+  const cartMapID = () => cart.map((product) => product.id)
+
   const { data: products, isLoading } = useQuery({
-    queryKey: getCartItemQueryKey(cart.map((product) => product.id)),
-    queryFn: () => api.getProductsByIds(cart.map((product) => product.id)),
+    queryKey: getCartItemQueryKey(cartMapID()),
+    queryFn: () => api.getProductsByIds(cartMapID()),
   })
 
   const countId = (id) => {
