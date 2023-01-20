@@ -8,9 +8,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { api } from '../helpers/Api'
 import formStyles from './styles.module.css'
 import bageSale from './sales.png'
-import { addProductsInCart, deleteProductsFromCartAC } from '../../redux/actionsCreators/cartAC'
-import { addIdForDetail } from '../../redux/actionsCreators/idCartAC'
+
 import { NavBar } from './NavBar/NavBar'
+import { addInCart, deleteProductFromCart } from '../../redux/slices/cartSlice/cartSlice'
+import { SORT_BY_ABC, SORT_BY_COST, SORT_BY_DISCOUNT } from '../../redux/slices/methodSortSlice/methodSortConstants'
+import { addIdCard } from '../../redux/slices/idCardSlice/idCardSlice'
 
 export const ALL_PRODUCTS = 'all_products'
 
@@ -35,7 +37,7 @@ export function Main() {
 
   const navigate = useNavigate()
   useEffect(() => {
-    if (!TOKEN.length) {
+    if (!TOKEN) {
       navigate('/signin')
     } else {
       api.setNewToken(TOKEN)
@@ -77,11 +79,11 @@ export function Main() {
 
   const newArrayPosts = () => {
     switch (methodSort) {
-      case 'sort by cost':
+      case SORT_BY_COST:
         return [...posts].sort((a, b) => b.price - a.price)
-      case 'sort by ABC':
+      case SORT_BY_ABC:
         return [...posts].sort((a, b) => a.name.localeCompare(b.name))
-      case 'sort by discount':
+      case SORT_BY_DISCOUNT:
         return [...posts].sort((a, b) => b.discount - a.discount)
       default:
         return posts
@@ -97,7 +99,7 @@ export function Main() {
 
           <div className={`card m-3 ${formStyles.pageCard}`} style={{ width: '18rem' }} key={post._id}>
 
-            <Link to={`/products/${post._id}`} onClick={() => dispatch(addIdForDetail(post._id))} className="text-decoration-none card" style={{ height: '30rem' }}>
+            <Link to={`/products/${post._id}`} onClick={() => dispatch(addIdCard(post._id))} className="text-decoration-none card" style={{ height: '30rem' }}>
               {post.discount > 0
                 ? (<img src={bageSale} style={{ position: 'absolute', width: '25%', left: '0' }} alt="NEW" />)
                 : (<div />)}
@@ -131,9 +133,9 @@ export function Main() {
             </Link>
             {countId(post._id) < 1
               ? (
-                <button type="button" onClick={() => dispatch(addProductsInCart(post._id))} className="btn btn-success position-relative bottom-0">В корзину</button>)
+                <button type="button" onClick={() => dispatch(addInCart(post._id))} className="btn btn-success position-relative bottom-0">В корзину</button>)
               : (
-                <button type="button" onClick={() => dispatch(deleteProductsFromCartAC(post._id))} className="btn btn-success position-relative">
+                <button type="button" onClick={() => dispatch(deleteProductFromCart(post._id))} className="btn btn-success position-relative">
                   В корзину
                   <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                     <FaShoppingBasket size="20" />

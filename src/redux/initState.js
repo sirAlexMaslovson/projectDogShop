@@ -1,4 +1,4 @@
-export const REDUX_LOCAL_STORAGE_KEY = 'REDUX_LOCAL_STORAGE_KEY'
+export const REDUX_LOCAL_STORAGE_KEY_DOG_FOOD = 'REDUX_LOCAL_STORAGE_KEY_DOG_FOOD'
 
 export const initialState = {
   TOKEN: '',
@@ -10,7 +10,7 @@ export const initialState = {
 }
 
 export const getInitialState = () => {
-  const stateLS = localStorage.getItem(REDUX_LOCAL_STORAGE_KEY)
+  const stateLS = localStorage.getItem(REDUX_LOCAL_STORAGE_KEY_DOG_FOOD)
 
   return stateLS ? JSON.parse(stateLS) : initialState
 }

@@ -4,15 +4,16 @@ import { useQuery } from '@tanstack/react-query'
 import { useDispatch, useSelector } from 'react-redux/es/exports'
 import { useNavigate } from 'react-router-dom'
 import {
-  addAllProductsBay,
-  addProductBay,
+  addBayAllProduct,
+  addBayProduct,
   clearCart,
   decrementProduct,
-  deleteAllProductsBay,
-  deleteProductBay,
-  deleteProductsFromCartAC,
+  deleteBayAllProducts,
+  deleteBayProduct,
+  deleteProductFromCart,
   incrementProduct,
-} from '../../redux/actionsCreators/cartAC'
+} from '../../redux/slices/cartSlice/cartSlice'
+
 import { api } from '../helpers/Api'
 import formStyles from './styles.module.css'
 import basketEmpty from './z9324f852.png'
@@ -99,7 +100,7 @@ export function CartPage() {
                   <input
                     className="form-check-input"
                     type="checkbox"
-                    onChange={() => dispatch(addAllProductsBay())}
+                    onChange={() => dispatch(addBayAllProduct())}
                     checked={isAllProductsInPrice()}
                     id="flexCheckDefault"
                   />
@@ -113,7 +114,7 @@ export function CartPage() {
                   <input
                     className="form-check-input"
                     type="checkbox"
-                    onChange={() => dispatch(deleteAllProductsBay())}
+                    onChange={() => dispatch(deleteBayAllProducts())}
                     checked={isAllProductsInPrice()}
                     id="flexCheckDefault"
                   />
@@ -142,9 +143,9 @@ export function CartPage() {
                           <p className="card-text p-3">{countId(post._id)}</p>
                           {countId(post._id) > 1
                             ? (<button type="button" onClick={() => dispatch(decrementProduct(post._id))} className="btn btn-secondary">-</button>)
-                            : <button type="button" onClick={() => dispatch(deleteProductsFromCartAC(post._id))} className="btn btn-secondary">-</button>}
+                            : <button type="button" onClick={() => dispatch(deleteProductFromCart(post._id))} className="btn btn-secondary">-</button>}
                         </div>
-                        <button type="button" onClick={() => dispatch(deleteProductsFromCartAC(post._id))} className="btn btn-danger">Удалить</button>
+                        <button type="button" onClick={() => dispatch(deleteProductFromCart(post._id))} className="btn btn-danger">Удалить</button>
                         <div>
                           <h5>
                             Общая стоимость:
@@ -161,7 +162,7 @@ export function CartPage() {
                                 <input
                                   className="form-check-input"
                                   type="checkbox"
-                                  onChange={() => dispatch(addProductBay(post._id))}
+                                  onChange={() => dispatch(addBayProduct(post._id))}
                                   checked={inBayProduct(post._id)}
                                   id="flexCheckDefault"
                                 />
@@ -170,7 +171,7 @@ export function CartPage() {
                                 <input
                                   className="form-check-input"
                                   type="checkbox"
-                                  onChange={() => dispatch(deleteProductBay(post._id))}
+                                  onChange={() => dispatch(deleteBayProduct(post._id))}
                                   checked={inBayProduct(post._id)}
                                   id="flexCheckDefault"
                                 />

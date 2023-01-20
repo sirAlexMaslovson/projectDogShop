@@ -5,19 +5,19 @@ import { useDispatch, useSelector } from 'react-redux/es/exports'
 import { useEffect, useState } from 'react'
 import companyLogo from './kisspng-logo-dog-la-baule-escoublac-petplate-brand-5beda5be4ad450.3618153715423011183065.png'
 import formStyles from './modal.module.css'
-import { addSearch, nullSearch } from '../../redux/actionsCreators/searchAC'
 import { useDebonce } from '../hooks/useDebonce'
-import { deleteSort } from '../../redux/actionsCreators/methodSortAC'
+
+import { nullSearch, setSearch } from '../../redux/slices/searchSlice/searchSlice'
+import { deleteSort } from '../../redux/slices/methodSortSlice/methodSortSlice'
 // import { useDebonce } from '../hooks/useDebonce'
 
 export function Header() {
   const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
+  const TOKEN = useSelector((store) => store.TOKEN)
   const cart = useSelector((store) => store.cart)
-  const myID = useSelector((store) => store.myUser._id)
-  const myName = useSelector((store) => store.myUser.name)
+  const myUser = useSelector((store) => store.myUser)
   const [searchInput, setSearchInput] = useState(() => searchParams.get('q') ?? '')
-  const badge = cart.length
 
   const debouncedSearchValue = useDebonce(searchInput, 500)
 
@@ -30,7 +30,7 @@ export function Header() {
   }
 
   useEffect(() => {
-    dispatch(addSearch(debouncedSearchValue))
+    dispatch(setSearch(debouncedSearchValue))
   }, [debouncedSearchValue])
 
   const changeInputHandler = (e) => {
@@ -47,6 +47,7 @@ export function Header() {
 
   return (
     <header>
+
       <div
         className={`d-flex justify-content-around align-items-center pt-3 pb-3 ${formStyles.header}`}
       >
@@ -60,7 +61,8 @@ export function Header() {
 
           <input value={searchInput} onChange={changeInputHandler} style={{ width: '100%' }} />
         </div>
-        {myID ? (
+
+        {TOKEN ? (
           <>
             <Link to="/favorites">
               <div type="button" className="position-relative">
@@ -71,13 +73,12 @@ export function Header() {
                 </span>
               </div>
             </Link>
-
-            <Link to={`/cart/${myID}`}>
+            <Link to={`/cart/${myUser.id}`}>
               <div type="button" className="position-relative">
                 <FaBoxOpen size="40" style={{ color: 'black' }} />
-                {badge > 0 ? (
+                {cart.length > 0 ? (
                   <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    {badge}
+                    {cart.length}
                     <span className="visually-hidden">unread messages</span>
                   </span>
                 ) : (
@@ -94,17 +95,18 @@ export function Header() {
                   onClick={clickHandlerUser}
                   className="btn btn-warning"
                 >
-                  {myName}
+                  {myUser.name}
                 </button>
 
               </li>
             </ul>
           </>
-        ) : (
-          <div>
-            <h5>Вы не авторизованы в системе</h5>
-          </div>
-        )}
+        )
+          : (
+            <div>
+              <h5>Вы не авторизованы в системе</h5>
+            </div>
+          )}
       </div>
     </header>
   )

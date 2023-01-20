@@ -7,8 +7,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { api } from '../helpers/Api'
 import formStyles from './styles.module.css'
-import { addToken } from '../../redux/actionsCreators/tokenAC'
-import { addMyUserInfo } from '../../redux/actionsCreators/myUserReducerAC'
+import { addToken } from '../../redux/slices/tokenSlice/tokenSlice'
+import { addUserInfo } from '../../redux/slices/myUserSlice/myUserSlice'
 
 export function FormAuthorization() {
   const dispatch = useDispatch()
@@ -41,7 +41,7 @@ export function FormAuthorization() {
     .then((data) => {
       const { token, ...rest } = data
       dispatch(addToken(token))
-      dispatch(addMyUserInfo(rest.data))
+      dispatch(addUserInfo(rest.data))
     })
     .then(() => sessionStorage.clear())
     .then(() => navigate('/'))

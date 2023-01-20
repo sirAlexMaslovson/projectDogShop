@@ -4,10 +4,10 @@ import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { deleteSort } from '../../redux/actionsCreators/methodSortAC'
-import { deleteMyUserInfo } from '../../redux/actionsCreators/myUserReducerAC'
-import { nullSearch } from '../../redux/actionsCreators/searchAC'
-import { deleteToken } from '../../redux/actionsCreators/tokenAC'
+import { deleteSort } from '../../redux/slices/methodSortSlice/methodSortSlice'
+import { deleteUserInfo } from '../../redux/slices/myUserSlice/myUserSlice'
+import { nullSearch } from '../../redux/slices/searchSlice/searchSlice'
+import { deleteToken } from '../../redux/slices/tokenSlice/tokenSlice'
 import { api } from '../helpers/Api'
 import formStyles from './styles.module.css'
 
@@ -30,7 +30,7 @@ export function UserInfo() {
   const clickHandlerOut = (e) => {
     if (e.target === e.currentTarget) {
       dispatch(deleteToken())
-      dispatch(deleteMyUserInfo())
+      dispatch(deleteUserInfo())
       navigate('/signin')
     }
   }

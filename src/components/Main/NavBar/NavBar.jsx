@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {
   deleteSort, sortByABC, sortByCost, sortByDiscount,
-} from '../../../redux/actionsCreators/methodSortAC'
+} from '../../../redux/slices/methodSortSlice/methodSortSlice'
 
 export function NavBar() {
   const dispatch = useDispatch()

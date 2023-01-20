@@ -1,13 +1,23 @@
-import { createStore, applyMiddleware } from 'redux'
-import { composeWithDevTools } from '@redux-devtools/extension'
-import { getInitialState, REDUX_LOCAL_STORAGE_KEY } from './initState'
-import { rootReducer } from './reducers/rootReducer'
+import { configureStore } from '@reduxjs/toolkit'
+import { REDUX_LOCAL_STORAGE_KEY_DOG_FOOD } from './initState'
+import { cartReducer } from './slices/cartSlice/cartSlice'
+import { myIdCardReducer } from './slices/idCardSlice/idCardSlice'
+import { myMethodSearchReducer } from './slices/methodSortSlice/methodSortSlice'
+import { myUserReducer } from './slices/myUserSlice/myUserSlice'
+import { mySearchReducer } from './slices/searchSlice/searchSlice'
+import { tokenReducer } from './slices/tokenSlice/tokenSlice'
 
-export const store = createStore(rootReducer, getInitialState(), composeWithDevTools(
-  applyMiddleware(),
-  // other store enhancers if any
-))
+export const store = configureStore({
+  reducer: {
+    TOKEN: tokenReducer,
+    myUser: myUserReducer,
+    search: mySearchReducer,
+    methodSorting: myMethodSearchReducer,
+    idForDetailCard: myIdCardReducer,
+    cart: cartReducer,
+  },
+})
 
 store.subscribe(() => {
-  localStorage.setItem(REDUX_LOCAL_STORAGE_KEY, JSON.stringify(store.getState()))
+  localStorage.setItem(REDUX_LOCAL_STORAGE_KEY_DOG_FOOD, JSON.stringify(store.getState()))
 })
