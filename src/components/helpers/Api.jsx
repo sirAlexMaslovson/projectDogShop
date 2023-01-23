@@ -72,7 +72,7 @@ class Api {
   }).then((response) => response.json())
 
   // eslint-disable-next-line class-methods-use-this
-  getProductsByIds = (ids) => Promise.all(ids.map((id) => fetch(`https://api.react-learning.ru/products/${id}`, {
+  getProductsByIds = (ids) => Promise.all(ids.map((id) => fetch(`${this.baseUrl}/products/${id}`, {
     method: 'GET',
     headers: {
       authorization: `Bearer ${this.token}`,
@@ -80,16 +80,6 @@ class Api {
     },
   })
     .then((response) => response.json())))
-
-  getUsersById = (ids) => Promise.all(ids.map((id) => fetch(`https://api.react-learning.ru/v2/${this.group}/users/${id}`, {
-    method: 'GET',
-    headers: {
-      authorization: `Bearer ${this.token}`,
-      'Content-Type': 'application/json',
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => data.name)))
 
   getProductsSearchQuery = (value) => fetch(`${this.baseUrl}/products/search?query=${value}`, {
     method: 'GET',
@@ -107,7 +97,7 @@ class Api {
     },
   }).then((response) => response.json())
 
-  doCommentById = (id, value) => fetch(`https://api.react-learning.ru/products/review/${id}`, {
+  doCommentById = (id, value) => fetch(`${this.baseUrl}/products/review/${id}`, {
     method: 'POST',
     headers: {
       authorization: `Bearer ${this.token}`,
@@ -115,6 +105,14 @@ class Api {
     },
     body: JSON.stringify(value),
   })
+
+  getProductReviews = (id) => fetch(`${this.baseUrl}/products/review/${id}`, {
+    method: 'GET',
+    headers: {
+      authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    },
+  }).then((response) => response.json())
 }
 
 export const api = new Api({

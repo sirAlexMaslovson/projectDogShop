@@ -3,9 +3,8 @@ import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { api } from '../helpers/Api'
-import { AddCommentBlock } from './CommentsBlock/CommentsBlock'
+import { AddCommentBlock } from './CommentsBlock/AddCommentBlock'
 import formStyles from './styles.module.css'
-import { UsersByLikeProduct } from './UsersByLikeProduct/UsersByLikeProduct'
 
 export const CART_INFO = 'CART_INFO'
 
@@ -34,14 +33,6 @@ export function DetailCardPage() {
     const result = (sum / (data.reviews.length)).toFixed(1)
     return result
   }
-
-  const getPostsProductsReviews = data.reviews
-
-  const arrayPostsLikes = data.likes
-
-  /* const getUsersArray = () => api.getUsersById(arrayPostsLikes)
-
-  console.log(getUsersArray()) */
 
   return (
 
@@ -84,14 +75,9 @@ export function DetailCardPage() {
         </li>
         <li className="list-group-item d-flex justify-content-between align-items-start">
           <div className="ms-2 me-auto">
-            <ul className="nav-item dropdown">
-              <div className="nav-link dropdown-toggle fw-bold" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Лайки
-              </div>
-
-              <UsersByLikeProduct arrayPostsLikes={arrayPostsLikes} />
-
-            </ul>
+            <div className="fw-bold" role="button">
+              Лайки
+            </div>
           </div>
           <span className="badge bg-primary rounded-pill">{data.likes.length}</span>
         </li>
@@ -103,16 +89,6 @@ export function DetailCardPage() {
 
           <AddCommentBlock />
 
-          {getPostsProductsReviews.map((post) => (
-            <div key={crypto.randomUUID()}>
-              <div className="alert alert-success p-0" role="alert">
-                <h5>{post.text}</h5>
-                <p>
-                  {`Автор: ${post.author}  (${post.created_at.substring(0, 10)})`}
-                </p>
-              </div>
-            </div>
-          ))}
         </ul>
       </div>
 
