@@ -30,6 +30,14 @@ export function AddCommentBlock() {
     return (<div>Error</div>)
   }
 
+  const clickHandlerPostComment = (event) => {
+    if (event.target === event.currentTarget) {
+      event.preventDefault()
+      mutate()
+      setCommentInput('')
+    }
+  }
+
   return (
     <div className="p-3">
       <h5>Оставить свой комментарий</h5>
@@ -37,7 +45,7 @@ export function AddCommentBlock() {
         <div className="container-fluid">
           <form className="d-flex" role="search" style={{ width: '100%' }}>
             <input className="form-control me-2" type="input" value={commentInput} onChange={changePostInputHandler} placeholder="комметарий" aria-label="Search" />
-            <button className="btn btn-outline-success" type="submit" onSubmit={mutate}>Отправить</button>
+            <button className="btn btn-outline-success" type="submit" onClick={clickHandlerPostComment}>Отправить</button>
           </form>
         </div>
       </nav>

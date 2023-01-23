@@ -115,16 +115,6 @@ class Api {
     },
     body: JSON.stringify(value),
   })
-    .then((response) => response.json())
-    .then((datas) => {
-      console.log(datas)
-      if (datas.discount) {
-        return datas
-      }
-      console.log(datas.message)
-      throw new Error(datas.message)
-    })
-    .catch(alert)
 }
 
 export const api = new Api({

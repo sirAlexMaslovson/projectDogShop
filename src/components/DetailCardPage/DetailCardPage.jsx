@@ -108,7 +108,7 @@ export function DetailCardPage() {
               <div className="alert alert-success p-0" role="alert">
                 <h5>{post.text}</h5>
                 <p>
-                  {`Автор: ${post.author}`}
+                  {`Автор: ${post.author}  (${post.created_at.substring(0, 10)})`}
                 </p>
               </div>
             </div>
