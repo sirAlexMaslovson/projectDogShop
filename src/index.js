@@ -14,7 +14,6 @@ import { Main } from './components/Main/Main'
 import { UserInfo } from './components/UserInfo/UserInfo'
 import { store } from './redux/store'
 import { CartPage } from './components/CartPage/CartPage'
-import { FavoritesPage } from './components/FavoritesPage/FavoritesPage'
 import { DetailCardPage } from './components/DetailCardPage/DetailCardPage'
 // import { SearchPage } from './components/Search/Search'
 
@@ -47,7 +46,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'favorites/',
-        element: <FavoritesPage />,
+        element: <Main />,
       },
       {
         path: 'products/:id',

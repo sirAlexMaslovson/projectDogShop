@@ -7,6 +7,7 @@ export const initialState = {
   methodSorting: '',
   idForDetailCard: '',
   cart: [],
+  favourite: [],
 }
 
 export const getInitialState = () => {

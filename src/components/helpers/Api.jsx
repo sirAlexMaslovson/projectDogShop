@@ -120,7 +120,7 @@ class Api {
       authorization: `Bearer ${this.token}`,
       'Content-Type': 'application/json',
     },
-  }).then(() => console.log('add like'))
+  })
 
   doLikeOff = (id) => fetch(`${this.baseUrl}/products/likes/${id}`, {
     method: 'DELETE',
@@ -128,7 +128,7 @@ class Api {
       authorization: `Bearer ${this.token}`,
       'Content-Type': 'application/json',
     },
-  }).then(() => console.log('delete like'))
+  })
 }
 
 export const api = new Api({

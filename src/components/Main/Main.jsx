@@ -3,9 +3,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
-import { FcLike, FcLikePlaceholder } from 'react-icons/fc'
+import { FcLikePlaceholder, FcLike } from 'react-icons/fc'
 import { FaShoppingBasket } from 'react-icons/fa'
-import { AiOutlineLike } from 'react-icons/ai'
+import { AiOutlineLike, AiFillLike } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
 import { api } from '../helpers/Api'
 import formStyles from './styles.module.css'
@@ -15,13 +15,12 @@ import { NavBar } from './NavBar/NavBar'
 import { addInCart, deleteProductFromCart } from '../../redux/slices/cartSlice/cartSlice'
 import { SORT_BY_ABC, SORT_BY_COST, SORT_BY_DISCOUNT } from '../../redux/slices/methodSortSlice/methodSortConstants'
 import { addIdCard } from '../../redux/slices/idCardSlice/idCardSlice'
+import { addFavourite, deleteFavourite } from '../../redux/slices/favouriteSlice/favouriteSlice'
 
 export const ALL_PRODUCTS = 'all_products'
 export const PRODUCT_LIKES_KEY = ['PRODUCT_LIKES_KEY']
 
 export function Main() {
-  console.log('render main')
-
   const dispatch = useDispatch()
 
   const cart = useSelector((store) => store.cart)
@@ -34,6 +33,8 @@ export function Main() {
 
   const myID = useSelector((store) => store.myUser._id)
 
+  const favourite = useSelector((store) => store.favourite)
+
   const queryClient = useQueryClient()
 
   const countId = (id) => {
@@ -43,6 +44,8 @@ export function Main() {
     }
     return objId.count
   }
+
+  const isFavoriteProduct = (id) => favourite.find((element) => element === id)
 
   const navigate = useNavigate()
   useEffect(() => {
@@ -96,6 +99,8 @@ export function Main() {
     )
   }
 
+  const myLike = (ids) => ids.find((id) => id === myID)
+
   const newArrayPosts = () => {
     switch (methodSort) {
       case SORT_BY_COST:
@@ -117,11 +122,13 @@ export function Main() {
         {newArrayPosts().map((post) => (
           <div className={`card m-3 ${formStyles.pageCard}`} style={{ width: '18rem' }} key={post._id}>
 
-            {!post.likes.find((id) => id === myID)
-              ? (<FcLikePlaceholder type="button" className="z-3 position-absolute fs-2" onClick={() => addLike(post._id)} style={{ right: '.5rem' }} />)
-              : (<FcLike type="button" className="z-3 position-absolute fs-2" onClick={() => deleteLike(post._id)} style={{ right: '.5rem' }} />)}
+            {!isFavoriteProduct(post._id)
+              ? (<FcLikePlaceholder type="button" onClick={() => dispatch(addFavourite(post._id))} className="z-3 position-absolute fs-2" style={{ right: '.5rem' }} />)
+              : (<FcLike type="button" onClick={() => dispatch(deleteFavourite(post._id))} className="z-3 position-absolute fs-2" style={{ right: '.5rem' }} />)}
 
-            <AiOutlineLike type="button" className="z-3 position-absolute fs-2 text-success" style={{ right: '.5rem', top: '3rem', opacity: '.4' }} />
+            {!myLike(post.likes)
+              ? <AiOutlineLike type="button" className="z-3 position-absolute fs-2 text-success" onClick={() => addLike(post._id)} style={{ right: '.5rem', top: '3rem', opacity: '.4' }} />
+              : <AiFillLike type="button" className="z-3 position-absolute fs-2 text-success" onClick={() => deleteLike(post._id)} style={{ right: '.5rem', top: '3rem' }} />}
 
             <Link to={`/products/${post._id}`} onClick={() => dispatch(addIdCard(post._id))} className="text-decoration-none card" style={{ height: '30rem' }}>
               {post.discount > 0

@@ -17,6 +17,7 @@ export function Header() {
   const TOKEN = useSelector((store) => store.TOKEN)
   const cart = useSelector((store) => store.cart)
   const myUser = useSelector((store) => store.myUser)
+  const favourite = useSelector((store) => store.favourite)
   const [searchInput, setSearchInput] = useState(() => searchParams.get('q') ?? '')
 
   const debouncedSearchValue = useDebonce(searchInput, 500)
@@ -68,7 +69,7 @@ export function Header() {
               <div type="button" className="position-relative">
                 <FaHeart size="40" style={{ color: 'red' }} />
                 <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
-                  +
+                  {favourite.length}
                   <span className="visually-hidden">unread messages</span>
                 </span>
               </div>
