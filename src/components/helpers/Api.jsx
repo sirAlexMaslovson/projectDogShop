@@ -113,6 +113,22 @@ class Api {
       'Content-Type': 'application/json',
     },
   }).then((response) => response.json())
+
+  doLikeIn = (id) => fetch(`${this.baseUrl}/products/likes/${id}`, {
+    method: 'PUT',
+    headers: {
+      authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    },
+  }).then(() => console.log('add like'))
+
+  doLikeOff = (id) => fetch(`${this.baseUrl}/products/likes/${id}`, {
+    method: 'DELETE',
+    headers: {
+      authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    },
+  }).then(() => console.log('delete like'))
 }
 
 export const api = new Api({

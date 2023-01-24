@@ -1,8 +1,9 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-underscore-dangle */
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
+import { FcLike, FcLikePlaceholder } from 'react-icons/fc'
 import { FaShoppingBasket } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import { api } from '../helpers/Api'
@@ -15,8 +16,11 @@ import { SORT_BY_ABC, SORT_BY_COST, SORT_BY_DISCOUNT } from '../../redux/slices/
 import { addIdCard } from '../../redux/slices/idCardSlice/idCardSlice'
 
 export const ALL_PRODUCTS = 'all_products'
+export const PRODUCT_LIKES_KEY = ['PRODUCT_LIKES_KEY']
 
 export function Main() {
+  console.log('render main')
+
   const dispatch = useDispatch()
 
   const cart = useSelector((store) => store.cart)
@@ -26,6 +30,10 @@ export function Main() {
   const search = useSelector((store) => store.search)
 
   const methodSort = useSelector((store) => store.methodSorting)
+
+  const myID = useSelector((store) => store.myUser._id)
+
+  const queryClient = useQueryClient()
 
   const countId = (id) => {
     const objId = cart.find((post) => post.id === id)
@@ -47,6 +55,20 @@ export function Main() {
   const { data: posts, isLoading } = useQuery({
     queryKey: [ALL_PRODUCTS, search],
     queryFn: () => api.getProductsSearchQuery(search),
+  })
+
+  const { mutate: addLike } = useMutation({
+    mutationFn: (id) => {
+      api.doLikeIn(id)
+    },
+    onSuccess: () => queryClient.invalidateQueries([ALL_PRODUCTS]),
+  })
+
+  const { mutate: deleteLike } = useMutation({
+    mutationFn: (id) => {
+      api.doLikeOff(id)
+    },
+    onSuccess: () => queryClient.invalidateQueries([ALL_PRODUCTS]),
   })
 
   const getPriceProduct = (id) => {
@@ -96,13 +118,17 @@ export function Main() {
       <NavBar />
       <div className="container d-flex flex-wrap pt-2 justify-content-between position-relative">
         {newArrayPosts().map((post) => (
-
           <div className={`card m-3 ${formStyles.pageCard}`} style={{ width: '18rem' }} key={post._id}>
+
+            {!post.likes.find((id) => id === myID)
+              ? (<FcLikePlaceholder type="button" className="z-3 position-absolute fs-2" onClick={() => addLike(post._id)} style={{ right: '1rem', top: '1rem' }} />)
+              : (<FcLike type="button" className="z-3 position-absolute fs-2" onClick={() => deleteLike(post._id)} style={{ right: '1rem', top: '1rem' }} />)}
 
             <Link to={`/products/${post._id}`} onClick={() => dispatch(addIdCard(post._id))} className="text-decoration-none card" style={{ height: '30rem' }}>
               {post.discount > 0
                 ? (<img src={bageSale} style={{ position: 'absolute', width: '25%', left: '0' }} alt="NEW" />)
                 : (<div />)}
+
               <img src={post.pictures} style={{ height: '18rem', objectFit: 'cover' }} alt={post.name} />
               <div className="card-body">
                 <h5 className="card-title text-center text-success">{post.name}</h5>

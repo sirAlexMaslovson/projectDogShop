@@ -4,10 +4,9 @@ import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import { REDUX_LOCAL_STORAGE_KEY_DOG_FOOD } from '../../redux/initState'
 import { deleteSort } from '../../redux/slices/methodSortSlice/methodSortSlice'
-import { deleteUserInfo } from '../../redux/slices/myUserSlice/myUserSlice'
 import { nullSearch } from '../../redux/slices/searchSlice/searchSlice'
-import { deleteToken } from '../../redux/slices/tokenSlice/tokenSlice'
 import { api } from '../helpers/Api'
 import formStyles from './styles.module.css'
 
@@ -29,8 +28,7 @@ export function UserInfo() {
 
   const clickHandlerOut = (e) => {
     if (e.target === e.currentTarget) {
-      dispatch(deleteToken())
-      dispatch(deleteUserInfo())
+      localStorage.removeItem(REDUX_LOCAL_STORAGE_KEY_DOG_FOOD)
       navigate('/signin')
     }
   }
