@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { FcLike, FcLikePlaceholder } from 'react-icons/fc'
 import { FaShoppingBasket } from 'react-icons/fa'
+import { AiOutlineLike } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
 import { api } from '../helpers/Api'
 import formStyles from './styles.module.css'
@@ -58,17 +59,13 @@ export function Main() {
   })
 
   const { mutate: addLike } = useMutation({
-    mutationFn: (id) => {
-      api.doLikeIn(id)
-    },
-    onSuccess: () => queryClient.invalidateQueries([ALL_PRODUCTS]),
+    mutationFn: (id) => api.doLikeIn(id),
+    onSuccess: () => queryClient.invalidateQueries([ALL_PRODUCTS, search]),
   })
 
   const { mutate: deleteLike } = useMutation({
-    mutationFn: (id) => {
-      api.doLikeOff(id)
-    },
-    onSuccess: () => queryClient.invalidateQueries([ALL_PRODUCTS]),
+    mutationFn: (id) => api.doLikeOff(id),
+    onSuccess: () => queryClient.invalidateQueries([ALL_PRODUCTS, search]),
   })
 
   const getPriceProduct = (id) => {
@@ -121,8 +118,10 @@ export function Main() {
           <div className={`card m-3 ${formStyles.pageCard}`} style={{ width: '18rem' }} key={post._id}>
 
             {!post.likes.find((id) => id === myID)
-              ? (<FcLikePlaceholder type="button" className="z-3 position-absolute fs-2" onClick={() => addLike(post._id)} style={{ right: '1rem', top: '1rem' }} />)
-              : (<FcLike type="button" className="z-3 position-absolute fs-2" onClick={() => deleteLike(post._id)} style={{ right: '1rem', top: '1rem' }} />)}
+              ? (<FcLikePlaceholder type="button" className="z-3 position-absolute fs-2" onClick={() => addLike(post._id)} style={{ right: '.5rem' }} />)
+              : (<FcLike type="button" className="z-3 position-absolute fs-2" onClick={() => deleteLike(post._id)} style={{ right: '.5rem' }} />)}
+
+            <AiOutlineLike type="button" className="z-3 position-absolute fs-2 text-success" style={{ right: '.5rem', top: '3rem', opacity: '.4' }} />
 
             <Link to={`/products/${post._id}`} onClick={() => dispatch(addIdCard(post._id))} className="text-decoration-none card" style={{ height: '30rem' }}>
               {post.discount > 0
