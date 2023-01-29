@@ -2,6 +2,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
+import { RiDeleteBin6Line } from 'react-icons/ri'
 import { api } from '../../helpers/Api'
 
 export const PRODUCT_REWIEWS_KEY = ['PRODUCT_REWIEWS_KEY']
@@ -28,8 +29,13 @@ export function AddCommentBlock() {
     queryFn: () => api.getProductReviews(idForCard),
   })
 
-  const { mutate } = useMutation({
+  const { mutate: doComment } = useMutation({
     mutationFn: () => api.doCommentById(idForCard, objComment),
+    onSuccess: () => queryClient.invalidateQueries(PRODUCT_REWIEWS_KEY.concat(idForCard)),
+  })
+
+  const { mutate: deleteComment } = useMutation({
+    mutationFn: (idProduct, idComment) => api.deleteCommentById(idProduct, idComment),
     onSuccess: () => queryClient.invalidateQueries(PRODUCT_REWIEWS_KEY.concat(idForCard)),
   })
 
@@ -42,7 +48,7 @@ export function AddCommentBlock() {
   const clickHandlerPostComment = (event) => {
     if (event.target === event.currentTarget) {
       event.preventDefault()
-      mutate()
+      doComment()
       setCommentInput('')
     }
   }
@@ -62,21 +68,26 @@ export function AddCommentBlock() {
         </nav>
       </div>
 
+      <h5 className="text-info-emphasis">Мои комментарии:</h5>
       {myComments().map((post) => (
         <div className="pb-3" key={crypto.randomUUID()}>
-          <h5>Мои комментарии:</h5>
-          <div className="alert alert-info p-0" role="alert">
-            <h5>{post.text}</h5>
-            <p>
-              {`Автор: ${post.author.name}  (${post.created_at.substring(0, 10)})`}
-            </p>
+          <div className="alert alert-info p-0 d-flex" role="alert">
+            <div className="p-2 w-100">
+              <h5>{post.text}</h5>
+              <p>
+                {`Автор: ${post.author.name}  (${post.created_at.substring(0, 10)})`}
+              </p>
+            </div>
+            <div type="button" className="p-2 flex-shrink-1 text-danger" style={{ fontSize: '2rem' }}>
+              <RiDeleteBin6Line onClick={() => deleteComment(idForCard, post._id)} />
+            </div>
           </div>
         </div>
       ))}
 
+      <h5>Комментарии пользователей:</h5>
       {allCommentsUsers().map((post) => (
         <div key={crypto.randomUUID()}>
-          <h5>Комментарии пользователей:</h5>
           <div className="alert alert-success p-0" role="alert">
             <h5>{post.text}</h5>
             <p>

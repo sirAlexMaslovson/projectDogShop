@@ -13,9 +13,13 @@ import bageSale from './sales.png'
 
 import { NavBar } from './NavBar/NavBar'
 import { addInCart, deleteProductFromCart } from '../../redux/slices/cartSlice/cartSlice'
-import { SORT_BY_ABC, SORT_BY_COST, SORT_BY_DISCOUNT } from '../../redux/slices/methodSortSlice/methodSortConstants'
+import {
+  SORT_BY_ABC, SORT_BY_COST, SORT_BY_DISCOUNT, SORT_BY_MY_FAVORITE,
+} from '../../redux/slices/methodSortSlice/methodSortConstants'
 import { addIdCard } from '../../redux/slices/idCardSlice/idCardSlice'
 import { addFavourite, deleteFavourite } from '../../redux/slices/favouriteSlice/favouriteSlice'
+import { deleteSort } from '../../redux/slices/methodSortSlice/methodSortSlice'
+import { RaitingPrduct } from './RaitingProduct/RaitingProduct'
 
 export const ALL_PRODUCTS = 'all_products'
 export const PRODUCT_LIKES_KEY = ['PRODUCT_LIKES_KEY']
@@ -45,14 +49,13 @@ export function Main() {
     return objId.count
   }
 
-  const isFavoriteProduct = (id) => favourite.find((element) => element === id)
-
   const navigate = useNavigate()
   useEffect(() => {
     if (!TOKEN) {
       navigate('/signin')
     } else {
       api.setNewToken(TOKEN)
+      dispatch(deleteSort())
     }
   }, [])
 
@@ -101,6 +104,15 @@ export function Main() {
 
   const myLike = (ids) => ids.find((id) => id === myID)
 
+  const isFavoriteProduct = (id) => favourite.find((post) => post._id === id)
+
+  const getRaitnigProduct = (arrayReviews) => {
+    const newArrayReviews = arrayReviews.map((element) => element.rating)
+    const sum = newArrayReviews.reduce((partialSum, a) => partialSum + a, 0)
+    const result = (sum / (arrayReviews.length).toFixed(1))
+    return Math.round(result)
+  }
+
   const newArrayPosts = () => {
     switch (methodSort) {
       case SORT_BY_COST:
@@ -109,6 +121,8 @@ export function Main() {
         return [...posts].sort((a, b) => a.name.localeCompare(b.name))
       case SORT_BY_DISCOUNT:
         return [...posts].sort((a, b) => b.discount - a.discount)
+      case SORT_BY_MY_FAVORITE:
+        return favourite
       default:
         return posts
     }
@@ -123,7 +137,7 @@ export function Main() {
           <div className={`card m-3 ${formStyles.pageCard}`} style={{ width: '18rem' }} key={post._id}>
 
             {!isFavoriteProduct(post._id)
-              ? (<FcLikePlaceholder type="button" onClick={() => dispatch(addFavourite(post._id))} className="z-3 position-absolute fs-2" style={{ right: '.5rem' }} />)
+              ? (<FcLikePlaceholder type="button" onClick={() => dispatch(addFavourite(post))} className="z-3 position-absolute fs-2" style={{ right: '.5rem' }} />)
               : (<FcLike type="button" onClick={() => dispatch(deleteFavourite(post._id))} className="z-3 position-absolute fs-2" style={{ right: '.5rem' }} />)}
 
             {!myLike(post.likes)
@@ -136,8 +150,11 @@ export function Main() {
                 : (<div />)}
 
               <img src={post.pictures} style={{ height: '18rem', objectFit: 'cover' }} alt={post.name} />
-              <div className="card-body">
+              <div className="card-body p-0">
                 <h5 className="card-title text-center text-success">{post.name}</h5>
+              </div>
+              <div>
+                <RaitingPrduct raitingProductValue={getRaitnigProduct(post.reviews)} />
               </div>
               <div className="text-center text-success">
                 {post.wight ? (<h6>{`Цена за ${post.wight}`}</h6>) : (<h6>Цена за штуку</h6>)}

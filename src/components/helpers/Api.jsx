@@ -129,6 +129,44 @@ class Api {
       'Content-Type': 'application/json',
     },
   })
+
+  deleteCommentById = (idProduct, commentId) => fetch(`${this.baseUrl}/products/review/${idProduct}/${commentId}`, {
+    method: 'DELETE',
+    headers: {
+      authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    },
+  })
+
+  editUserInfo = (values) => fetch(`${this.baseUrl}/v2/${this.group}/users/me`, {
+    method: 'PATCH',
+    headers: {
+      authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(values),
+  }).then((response) => response.json())
+    .then((data) => {
+      if (data.name) {
+        return data
+      }
+      throw new Error(data.message)
+    }).catch(alert)
+
+  editUserAvatar = (value) => fetch(`${this.baseUrl}/v2/${this.group}/users/me/avatar`, {
+    method: 'PATCH',
+    headers: {
+      authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ avatar: value }),
+  }).then((response) => response.json())
+    .then((data) => {
+      if (data.name) {
+        return data
+      }
+      throw new Error(data.message)
+    }).catch(alert)
 }
 
 export const api = new Api({

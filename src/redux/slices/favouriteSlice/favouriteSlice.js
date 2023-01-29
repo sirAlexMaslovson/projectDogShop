@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { createSlice } from '@reduxjs/toolkit'
 import { getInitialState } from '../../initState'
 
@@ -11,7 +12,7 @@ const favouriteSlice = createSlice({
     },
 
     deleteFavourite(state, action) {
-      return state.filter((card) => card !== action.payload)
+      return state.filter((card) => card._id !== action.payload)
     },
 
   },
