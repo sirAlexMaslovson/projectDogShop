@@ -5,7 +5,6 @@ export const initialState = {
   myUser: {},
   search: '',
   methodSorting: '',
-  idForDetailCard: '',
   cart: [],
   favourite: [],
 }

@@ -3,12 +3,13 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { RiDeleteBin6Line } from 'react-icons/ri'
+import { useParams } from 'react-router-dom'
 import { api } from '../../helpers/Api'
 
 export const PRODUCT_REWIEWS_KEY = ['PRODUCT_REWIEWS_KEY']
 
 export function AddCommentBlock() {
-  const idForCard = useSelector((store) => store.idForDetailCard)
+  const { id } = useParams()
 
   const myID = useSelector((store) => store.myUser._id)
 
@@ -25,18 +26,23 @@ export function AddCommentBlock() {
   }
 
   const { data: reviews, isLoading } = useQuery({
-    queryKey: PRODUCT_REWIEWS_KEY.concat(idForCard),
-    queryFn: () => api.getProductReviews(idForCard),
+    queryKey: PRODUCT_REWIEWS_KEY.concat(id),
+    queryFn: () => api.getProductReviews(id),
   })
 
   const { mutate: doComment } = useMutation({
-    mutationFn: () => api.doCommentById(idForCard, objComment),
-    onSuccess: () => queryClient.invalidateQueries(PRODUCT_REWIEWS_KEY.concat(idForCard)),
+    mutationFn: () => api.doCommentById(id, objComment),
+    onSuccess: () => queryClient.invalidateQueries(PRODUCT_REWIEWS_KEY.concat(id)),
   })
 
+  const deleteMyComment = (idProduct, idComment) => {
+    console.log(`Вызов в функции queryFn: ${idProduct}, ${idComment}`)
+    api.deleteCommentById(idProduct, idComment)
+  }
+
   const { mutate: deleteComment } = useMutation({
-    mutationFn: (idProduct, idComment) => api.deleteCommentById(idProduct, idComment),
-    onSuccess: () => queryClient.invalidateQueries(PRODUCT_REWIEWS_KEY.concat(idForCard)),
+    mutationFn: deleteMyComment,
+    onSuccess: () => queryClient.invalidateQueries(PRODUCT_REWIEWS_KEY.concat(id)),
   })
 
   if (isLoading) return <div>Load</div>
@@ -79,7 +85,11 @@ export function AddCommentBlock() {
               </p>
             </div>
             <div type="button" className="p-2 flex-shrink-1 text-danger" style={{ fontSize: '2rem' }}>
-              <RiDeleteBin6Line onClick={() => deleteComment(idForCard, post._id)} />
+              <RiDeleteBin6Line onClick={() => {
+                deleteComment(post.product, post._id)
+                console.log(`вызов в onClick: ${post.product}, ${post._id}`)
+              }}
+              />
             </div>
           </div>
         </div>

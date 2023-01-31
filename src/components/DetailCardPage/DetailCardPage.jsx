@@ -1,8 +1,14 @@
 /* eslint-disable no-underscore-dangle */
-import { useQuery } from '@tanstack/react-query'
-import { useEffect } from 'react'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import {
+  Link, useNavigate, useParams,
+} from 'react-router-dom'
+import { FormEditProduct } from '../FormEditProduct/FormEditProduct'
+
 import { api } from '../helpers/Api'
+import { Modal } from '../RegistrationModal/RegisrtationModal'
 import { AddCommentBlock } from './CommentsBlock/AddCommentBlock'
 import formStyles from './styles.module.css'
 
@@ -11,17 +17,38 @@ export const CART_INFO = 'CART_INFO'
 export function DetailCardPage() {
   const TOKEN = useSelector((store) => store.TOKEN)
   const myGroup = useSelector((store) => store.myUser.group)
-  const idForCart = useSelector((store) => store.idForDetailCard)
+  const myID = useSelector((store) => store.myUser._id)
+  const navigate = useNavigate()
+
+  const [isModalEditProduct, setIsModalEditProduct] = useState(false)
+
+  const openModalEditProduct = () => {
+    setIsModalEditProduct(true)
+  }
+  const closeModalEditProduct = () => {
+    setIsModalEditProduct(false)
+  }
+
+  const { id } = useParams()
 
   useEffect(() => {
     api.setNewToken(TOKEN)
     api.setNewGroup(myGroup)
-    api.setNewIdCard(idForCart)
+    api.setNewIdCard(id)
   }, [])
 
   const { data, isLoading, isError } = useQuery({
     queryKey: [CART_INFO],
     queryFn: api.getCardById,
+  })
+
+  const deleteProduct = () => {
+    api.deleteMyProduct(id)
+    navigate('/')
+  }
+
+  const { mutate } = useMutation({
+    mutationFn: deleteProduct,
   })
 
   if (isLoading) return <div>Load</div>
@@ -37,6 +64,21 @@ export function DetailCardPage() {
   return (
 
     <div className={`container text-center ${formStyles.card}`}>
+
+      <div className="container d-flex justify-content-around p-5">
+        <Link to="/"><button type="button" className="btn btn-primary">На главную</button></Link>
+        {data.author._id === myID
+          ? (
+            <>
+              <button type="button" onClick={openModalEditProduct} className="btn btn-success">Редактировать мой товар</button>
+              <button type="button" onClick={mutate} className="btn btn-danger">Удалить мой товар</button>
+            </>
+          )
+          : <div />}
+
+        <Link to="/user"><button type="button" className="btn btn-primary">В профиль</button></Link>
+      </div>
+
       <div className="row">
 
         <div className="col-4 pt-5">
@@ -87,10 +129,17 @@ export function DetailCardPage() {
         <ul>
           <h3>Комментарии</h3>
 
-          <AddCommentBlock />
+          <AddCommentBlock idCard={id} />
 
         </ul>
       </div>
+
+      <Modal
+        closeHandler={closeModalEditProduct}
+        isOpen={isModalEditProduct}
+      >
+        <FormEditProduct closeModal={closeModalEditProduct} card={data} />
+      </Modal>
 
     </div>
   )

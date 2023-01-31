@@ -16,7 +16,6 @@ import { addInCart, deleteProductFromCart } from '../../redux/slices/cartSlice/c
 import {
   SORT_BY_ABC, SORT_BY_COST, SORT_BY_DISCOUNT, SORT_BY_MY_FAVORITE,
 } from '../../redux/slices/methodSortSlice/methodSortConstants'
-import { addIdCard } from '../../redux/slices/idCardSlice/idCardSlice'
 import { addFavourite, deleteFavourite } from '../../redux/slices/favouriteSlice/favouriteSlice'
 import { deleteSort } from '../../redux/slices/methodSortSlice/methodSortSlice'
 import { RaitingPrduct } from './RaitingProduct/RaitingProduct'
@@ -135,6 +134,13 @@ export function Main() {
       <div className="container d-flex flex-wrap pt-2 justify-content-between position-relative">
         {newArrayPosts().map((post) => (
           <div className={`card m-3 ${formStyles.pageCard}`} style={{ width: '18rem' }} key={post._id}>
+            {post.author._id === myID
+              ? (
+                <span className="position-absolute z-3 top-10 start-50 translate-middle badge rounded-pill bg-danger fs-6">
+                  Мой товар
+                </span>
+              )
+              : (<div />)}
 
             {!isFavoriteProduct(post._id)
               ? (<FcLikePlaceholder type="button" onClick={() => dispatch(addFavourite(post))} className="z-3 position-absolute fs-2" style={{ right: '.5rem' }} />)
@@ -144,7 +150,8 @@ export function Main() {
               ? <AiOutlineLike type="button" className="z-3 position-absolute fs-2 text-success" onClick={() => addLike(post._id)} style={{ right: '.5rem', top: '3rem', opacity: '.4' }} />
               : <AiFillLike type="button" className="z-3 position-absolute fs-2 text-success" onClick={() => deleteLike(post._id)} style={{ right: '.5rem', top: '3rem' }} />}
 
-            <Link to={`/products/${post._id}`} onClick={() => dispatch(addIdCard(post._id))} className="text-decoration-none card" style={{ height: '30rem' }}>
+            <Link to={`/products/${post._id}`} className="text-decoration-none card" style={{ height: '30rem' }}>
+
               {post.discount > 0
                 ? (<img src={bageSale} style={{ position: 'absolute', width: '25%', left: '0' }} alt="NEW" />)
                 : (<div />)}

@@ -167,6 +167,38 @@ class Api {
       }
       throw new Error(data.message)
     }).catch(alert)
+
+  postMyProduct = (values) => fetch(`${this.baseUrl}/products`, {
+    method: 'POST',
+    headers: {
+      authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(values),
+  }).then((response) => response.json())
+    .then((data) => {
+      if (data.name) {
+        return data
+      }
+      throw new Error(data.message)
+    }).catch(alert)
+
+  editMyProduct = (id, values) => fetch(`${this.baseUrl}/products/${id}`, {
+    method: 'PATCH',
+    headers: {
+      authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(values),
+  })
+
+  deleteMyProduct = (id) => fetch(`${this.baseUrl}/products/${id}`, {
+    method: 'DELETE',
+    headers: {
+      authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    },
+  })
 }
 
 export const api = new Api({

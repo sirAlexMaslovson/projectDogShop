@@ -9,7 +9,7 @@ import formStyles from './modal.module.css'
 export function FormRedMyAvatar({ closeModal }) {
   const queryClient = useQueryClient()
 
-  const [srcInput, setSrcInput] = useState('')
+  const [srcInput, setSrcInput] = useState('https://react-learning.ru/image-compressed/default-image.jpg')
 
   const dispatch = useDispatch()
 

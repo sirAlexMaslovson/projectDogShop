@@ -37,6 +37,13 @@ function ModalContent({ closeHandler, children }) {
         {children}
       </div>
     )
+  } if (children.type.name === 'FormEditProduct') {
+    return (
+      <div className={`${modalStyles.modalEditProduct} text-end`}>
+        <button onClick={clickHandler} type="submit" className="btn btn-danger">X</button>
+        {children}
+      </div>
+    )
   }
 }
 
