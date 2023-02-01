@@ -37,6 +37,7 @@ export function Header() {
   const changeInputHandler = (e) => {
     setSearchInput(e.target.value)
     setSearchParams({
+      ...Object.fromEntries(searchParams.entries()),
       q: e.target.value,
     })
   }

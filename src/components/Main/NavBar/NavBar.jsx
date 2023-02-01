@@ -12,11 +12,10 @@ export function NavBar() {
 
   useEffect(() => {
     setSearchParams({
+      ...Object.fromEntries(searchParams.entries()),
       sort: myMethodSorting,
     })
   }, [myMethodSorting])
-
-  console.log(searchParams)
 
   return (
     <ul className="nav justify-content-center align-items-center bg-warning-subtle">
@@ -24,7 +23,7 @@ export function NavBar() {
         <h5>сортировка:</h5>
       </li>
       <li className="nav-item">
-        <h6 className="nav-link"><Link to="/" onClick={() => dispatch(sortByABC())}>По алфавиту</Link></h6>
+        <h6 className="nav-link"><Link to="/" onClick={() => { dispatch(sortByABC()) }}>По алфавиту</Link></h6>
       </li>
       <h6>/</h6>
       <li className="nav-item">
