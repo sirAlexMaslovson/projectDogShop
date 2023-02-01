@@ -1,4 +1,4 @@
 export const SORT_BY_COST = 'SORT_BY_COST'
 export const SORT_BY_ABC = 'SORT_BY_ABC'
 export const SORT_BY_DISCOUNT = 'SORT_BY_DISCOUNT'
-export const SORT_BY_MY_FAVORITE = 'SORT_BY_MY_FAVORITE'
+export const SORT_BY_MY_PRODUCT = 'SORT_BY_MY_PRODUCT'

@@ -104,6 +104,7 @@ export function AddCommentBlock() {
       {myComments().map((post) => (
         <div className="pb-3" key={crypto.randomUUID()}>
           <div className="alert alert-info p-0 d-flex" role="alert">
+            <img src={post.author.avatar} className="flex-shrink-1 text-danger" alt={post.author.name} style={{ width: '7rem' }} />
             <div className="p-2 w-100">
               <RaitingPrduct raitingProductValue={post.rating} />
               <h5>{post.text}</h5>
@@ -121,12 +122,15 @@ export function AddCommentBlock() {
       <h5>Комментарии пользователей:</h5>
       {allCommentsUsers().map((post) => (
         <div key={crypto.randomUUID()}>
-          <div className="alert alert-success p-0" role="alert">
-            <RaitingPrduct raitingProductValue={post.rating} />
-            <h5>{post.text}</h5>
-            <p>
-              {`Автор: ${post.author.name}  (${post.created_at.substring(0, 10)})`}
-            </p>
+          <div className="alert alert-success p-0 d-flex" role="alert">
+            <img src={post.author.avatar} className="flex-shrink-1 text-danger" alt={post.author.name} style={{ width: '7rem' }} />
+            <div className="p-2 w-100">
+              <RaitingPrduct raitingProductValue={post.rating} />
+              <h5>{post.text}</h5>
+              <p>
+                {`Автор: ${post.author.name}  (${post.created_at.substring(0, 10)})`}
+              </p>
+            </div>
           </div>
         </div>
       ))}

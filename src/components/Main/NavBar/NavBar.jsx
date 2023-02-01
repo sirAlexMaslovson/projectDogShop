@@ -1,7 +1,8 @@
+// import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {
-  deleteSort, sortByABC, sortByCost, sortByDiscount,
+  deleteSort, sortByABC, sortByCost, sortByDiscount, sortByMyProduct,
 } from '../../../redux/slices/methodSortSlice/methodSortSlice'
 
 export function NavBar() {
@@ -22,6 +23,10 @@ export function NavBar() {
       <h6>/</h6>
       <li className="nav-item">
         <h6 className="nav-link"><Link to="/" onClick={() => dispatch(sortByDiscount())}>По скидке</Link></h6>
+      </li>
+      <h6>/</h6>
+      <li className="nav-item">
+        <h6 className="nav-link"><Link to="/" onClick={() => dispatch(sortByMyProduct())}>Мои товары</Link></h6>
       </li>
       <h6>/</h6>
       <li className="nav-item">

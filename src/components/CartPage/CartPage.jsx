@@ -201,7 +201,7 @@ export function CartPage() {
               {getTotalPriceBay()}
               ₽
             </h5>
-            <button type="button" className="btn btn-success m-5">Перейти к оформлению (страница 404) В РАЗРАБОТКЕ</button>
+            <button type="button" className="btn btn-success m-5">Перейти к оформлению</button>
           </div>
         </div>
       </div>

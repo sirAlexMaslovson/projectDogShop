@@ -13,7 +13,9 @@ import bageSale from './sales.png'
 
 import { NavBar } from './NavBar/NavBar'
 import { addInCart, deleteProductFromCart } from '../../redux/slices/cartSlice/cartSlice'
-import { SORT_BY_ABC, SORT_BY_COST, SORT_BY_DISCOUNT } from '../../redux/slices/methodSortSlice/methodSortConstants'
+import {
+  SORT_BY_ABC, SORT_BY_COST, SORT_BY_DISCOUNT, SORT_BY_MY_PRODUCT,
+} from '../../redux/slices/methodSortSlice/methodSortConstants'
 import { addFavourite, deleteFavourite } from '../../redux/slices/favouriteSlice/favouriteSlice'
 import { deleteSort } from '../../redux/slices/methodSortSlice/methodSortSlice'
 import { RaitingPrduct } from './RaitingProduct/RaitingProduct'
@@ -73,7 +75,11 @@ export function Main() {
 
   const getPriceProduct = (id) => {
     const objProduct = posts.find((post) => post._id === id)
-    return Math.round(objProduct.price / ((100 - objProduct.discount) / 100))
+    if (objProduct.price) {
+      return Math.round(objProduct.price / ((100 - objProduct.discount) / 100))
+    }
+
+    return 0
   }
 
   function getStrNumberSearch(value) {
@@ -118,6 +124,8 @@ export function Main() {
         return [...posts].sort((a, b) => a.name.localeCompare(b.name))
       case SORT_BY_DISCOUNT:
         return [...posts].sort((a, b) => b.discount - a.discount)
+      case SORT_BY_MY_PRODUCT:
+        return posts.filter((post) => post.author._id === myID)
       default:
         return posts
     }
@@ -126,7 +134,7 @@ export function Main() {
   return (
     <>
       <NavBar />
-      <div className={posts.length > 4
+      <div className={newArrayPosts().length > 4
         ? formStyles.pageMain
         : formStyles.pageMainLow}
       >

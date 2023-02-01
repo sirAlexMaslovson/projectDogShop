@@ -8,7 +8,7 @@ import formStyles from './modal.module.css'
 import { useDebonce } from '../hooks/useDebonce'
 
 import { nullSearch, setSearch } from '../../redux/slices/searchSlice/searchSlice'
-import { deleteSort, sortByMyFavorite } from '../../redux/slices/methodSortSlice/methodSortSlice'
+import { deleteSort } from '../../redux/slices/methodSortSlice/methodSortSlice'
 // import { useDebonce } from '../hooks/useDebonce'
 
 export function Header() {
@@ -67,7 +67,7 @@ export function Header() {
           <>
             <Link to="/favorites">
               <div type="button" className="position-relative">
-                <FaHeart size="40" onClick={() => dispatch(sortByMyFavorite())} style={{ color: 'red' }} />
+                <FaHeart size="40" style={{ color: 'red' }} />
                 {favourite.length > 0 ? (
                   <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                     {favourite.length}

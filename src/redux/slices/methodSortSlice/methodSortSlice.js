@@ -4,7 +4,7 @@ import {
   SORT_BY_ABC,
   SORT_BY_COST,
   SORT_BY_DISCOUNT,
-  SORT_BY_MY_FAVORITE,
+  SORT_BY_MY_PRODUCT,
 } from './methodSortConstants'
 
 const methodSortSlice = createSlice({
@@ -19,7 +19,7 @@ const methodSortSlice = createSlice({
 
     sortByDiscount() { return SORT_BY_DISCOUNT },
 
-    sortByMyFavorite() { return SORT_BY_MY_FAVORITE },
+    sortByMyProduct() { return SORT_BY_MY_PRODUCT },
   },
 })
 
@@ -28,7 +28,7 @@ export const {
   sortByABC,
   deleteSort,
   sortByDiscount,
-  sortByMyFavorite,
+  sortByMyProduct,
 } = methodSortSlice.actions
 
 export const myMethodSearchReducer = methodSortSlice.reducer
