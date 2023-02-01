@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-underscore-dangle */
 import { useQuery } from '@tanstack/react-query'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux/es/exports'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -30,6 +31,12 @@ export function CartPage() {
   const getCartItemQueryKey = (cartItemsId) => PRODUCT_CART_KEY.concat(cartItemsId)
 
   const cartMapID = () => cart.map((product) => product.id)
+
+  const TOKEN = useSelector((store) => store.TOKEN)
+
+  useEffect(() => {
+    api.setNewToken(TOKEN)
+  }, [TOKEN])
 
   const { data: products, isLoading } = useQuery({
     queryKey: getCartItemQueryKey(cartMapID()),
@@ -85,7 +92,10 @@ export function CartPage() {
   }
 
   return (
-    <div className={`d-flex flex-column mb-3 ${formStyles.cart}`}>
+    <div className={products.length > 4 && products.length !== 0
+      ? (`d-flex flex-column mb-3 ${formStyles.cart}`)
+      : (`d-flex flex-column mb-3 ${formStyles.cartLow}`)}
+    >
       <div className="d-flex justify-content-around p-3">
         <button type="button" onClick={clickHandlerMain} className="btn btn-primary">На главную</button>
         <button type="button" onClick={() => dispatch(clearCart())} className="btn btn-danger">Очистить корзину</button>

@@ -28,9 +28,11 @@ export function FormRegistration() {
       })
   }
 
-  const { mutate } = useMutation({
+  const { mutate, isError, error } = useMutation({
     mutationFn: postValuesRegistration,
   })
+
+  console.log({ isError, error })
 
   return (
     <div className={`d-flex justify-content-center align-items-center ${formStyles.pageAuth}`}>
@@ -46,13 +48,22 @@ export function FormRegistration() {
             .max(20, 'Не более 20 символов')
             .required(REQUIRED_ERROR_MESSAGE),
           group: Yup.string()
-            .min(2, 'Не менее 20 символов')
+            .min(2, 'Не менее 2 символов')
             .required(REQUIRED_ERROR_MESSAGE),
           email: Yup.string().email('Invalid email address').required(REQUIRED_ERROR_MESSAGE),
         })}
         onSubmit={mutate}
       >
         <Form>
+
+          {isError
+            ? (
+              <div className="alert alert-danger text-center" role="alert">
+                <h5>{error.toString()}</h5>
+              </div>
+            )
+            : <div />}
+
           <div className={`d-flex justify-content-center align-items-center flex-column ${formStyles.formikForm}`}>
             <h5 className="text-center mb-3">Пройдите регистрацию</h5>
             <div className="mb-3">

@@ -13,9 +13,7 @@ import bageSale from './sales.png'
 
 import { NavBar } from './NavBar/NavBar'
 import { addInCart, deleteProductFromCart } from '../../redux/slices/cartSlice/cartSlice'
-import {
-  SORT_BY_ABC, SORT_BY_COST, SORT_BY_DISCOUNT, SORT_BY_MY_FAVORITE,
-} from '../../redux/slices/methodSortSlice/methodSortConstants'
+import { SORT_BY_ABC, SORT_BY_COST, SORT_BY_DISCOUNT } from '../../redux/slices/methodSortSlice/methodSortConstants'
 import { addFavourite, deleteFavourite } from '../../redux/slices/favouriteSlice/favouriteSlice'
 import { deleteSort } from '../../redux/slices/methodSortSlice/methodSortSlice'
 import { RaitingPrduct } from './RaitingProduct/RaitingProduct'
@@ -56,7 +54,7 @@ export function Main() {
       api.setNewToken(TOKEN)
       dispatch(deleteSort())
     }
-  }, [])
+  }, [TOKEN])
 
   const { data: posts, isLoading } = useQuery({
     queryKey: [ALL_PRODUCTS, search],
@@ -94,8 +92,8 @@ export function Main() {
   if (isLoading) return <div>Load</div>
   if (!posts.length) {
     return (
-      <div className="text-center">
-        <h4>{`По вашему поиску найдено ${posts.length} ${getStrNumberSearch(posts.length)}`}</h4>
+      <div className={`text-center ${formStyles.pageMainLow}`}>
+        <h4>{`По вашему поиску найдено: ${posts.length} ${getStrNumberSearch(posts.length)}`}</h4>
         <h5>is empty</h5>
       </div>
     )
@@ -103,7 +101,7 @@ export function Main() {
 
   const myLike = (ids) => ids.find((id) => id === myID)
 
-  const isFavoriteProduct = (id) => favourite.find((post) => post._id === id)
+  const isFavoriteProduct = (id) => favourite.find((post) => post === id)
 
   const getRaitnigProduct = (arrayReviews) => {
     const newArrayReviews = arrayReviews.map((element) => element.rating)
@@ -120,88 +118,91 @@ export function Main() {
         return [...posts].sort((a, b) => a.name.localeCompare(b.name))
       case SORT_BY_DISCOUNT:
         return [...posts].sort((a, b) => b.discount - a.discount)
-      case SORT_BY_MY_FAVORITE:
-        return favourite
       default:
         return posts
     }
   }
 
   return (
-    <div className={formStyles.pageMain}>
-      {search ? (<div className="text-center"><h4>{`По вашему поиску найдено ${posts.length} ${getStrNumberSearch(posts.length)}`}</h4></div>) : <div /> }
+    <>
       <NavBar />
-      <div className="container d-flex flex-wrap pt-2 justify-content-between position-relative">
-        {newArrayPosts().map((post) => (
-          <div className={`card m-3 ${formStyles.pageCard}`} style={{ width: '18rem' }} key={post._id}>
-            {post.author._id === myID
-              ? (
-                <span className="position-absolute z-3 top-10 start-50 translate-middle badge rounded-pill bg-danger fs-6">
-                  Мой товар
-                </span>
-              )
-              : (<div />)}
-
-            {!isFavoriteProduct(post._id)
-              ? (<FcLikePlaceholder type="button" onClick={() => dispatch(addFavourite(post))} className="z-3 position-absolute fs-2" style={{ right: '.5rem' }} />)
-              : (<FcLike type="button" onClick={() => dispatch(deleteFavourite(post._id))} className="z-3 position-absolute fs-2" style={{ right: '.5rem' }} />)}
-
-            {!myLike(post.likes)
-              ? <AiOutlineLike type="button" className="z-3 position-absolute fs-2 text-success" onClick={() => addLike(post._id)} style={{ right: '.5rem', top: '3rem', opacity: '.4' }} />
-              : <AiFillLike type="button" className="z-3 position-absolute fs-2 text-success" onClick={() => deleteLike(post._id)} style={{ right: '.5rem', top: '3rem' }} />}
-
-            <Link to={`/products/${post._id}`} className="text-decoration-none card" style={{ height: '30rem' }}>
-
-              {post.discount > 0
-                ? (<img src={bageSale} style={{ position: 'absolute', width: '25%', left: '0' }} alt="NEW" />)
+      <div className={posts.length > 4
+        ? formStyles.pageMain
+        : formStyles.pageMainLow}
+      >
+        {search ? (<div className="text-center"><h4>{`По вашему поиску найдено: ${posts.length} ${getStrNumberSearch(posts.length)}`}</h4></div>) : <div /> }
+        <div className="container d-flex flex-wrap pt-2 justify-content-between position-relative">
+          {newArrayPosts().map((post) => (
+            <div className={`card m-3 ${formStyles.pageCard}`} style={{ width: '18rem' }} key={post._id}>
+              {post.author._id === myID
+                ? (
+                  <span className="position-absolute z-3 top-10 start-50 translate-middle badge rounded-pill bg-danger fs-6">
+                    Мой товар
+                  </span>
+                )
                 : (<div />)}
 
-              <img src={post.pictures} style={{ height: '18rem', objectFit: 'cover' }} alt={post.name} />
-              <div className="card-body p-0">
-                <h5 className="card-title text-center text-success">{post.name}</h5>
-              </div>
-              <div>
-                <RaitingPrduct raitingProductValue={getRaitnigProduct(post.reviews)} />
-              </div>
-              <div className="text-center text-success">
-                {post.wight ? (<h6>{`Цена за ${post.wight}`}</h6>) : (<h6>Цена за штуку</h6>)}
-              </div>
-              <div className="d-flex justify-content-center">
-                <h5 className="card-text text-center p-3 text-dark">
-                  {post.price}
-                  ₽
-                </h5>
-                {post.discount
-                  ? (
-                    <h5 className="p-3 text-decoration-line-through text-danger position-relative">
-                      (
-                      {getPriceProduct(post._id)}
-                      ₽)
-                      <span className="position-absolute top-10 start-100 translate-middle badge rounded-pill bg-danger">
-                        -
-                        {post.discount}
-                        %
-                      </span>
-                    </h5>
-                  )
-                  : <div />}
-              </div>
-            </Link>
-            {countId(post._id) < 1
-              ? (
-                <button type="button" onClick={() => dispatch(addInCart(post._id))} className="btn btn-success position-relative bottom-0">В корзину</button>)
-              : (
-                <button type="button" onClick={() => dispatch(deleteProductFromCart(post._id))} className="btn btn-success position-relative">
-                  В корзину
-                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    <FaShoppingBasket size="20" />
-                  </span>
-                </button>
-              )}
-          </div>
+              {!isFavoriteProduct(post._id)
+                ? (<FcLikePlaceholder type="button" onClick={() => dispatch(addFavourite(post._id))} className="z-3 position-absolute fs-2" style={{ right: '.5rem' }} />)
+                : (<FcLike type="button" onClick={() => dispatch(deleteFavourite(post._id))} className="z-3 position-absolute fs-2" style={{ right: '.5rem' }} />)}
 
-        ))}
+              {!myLike(post.likes)
+                ? <AiOutlineLike type="button" className="z-3 position-absolute fs-2 text-success" onClick={() => addLike(post._id)} style={{ right: '.5rem', top: '3rem', opacity: '.4' }} />
+                : <AiFillLike type="button" className="z-3 position-absolute fs-2 text-success" onClick={() => deleteLike(post._id)} style={{ right: '.5rem', top: '3rem' }} />}
+
+              <Link to={`/products/${post._id}`} className="text-decoration-none card" style={{ height: '30rem' }}>
+
+                {post.discount > 0
+                  ? (<img src={bageSale} style={{ position: 'absolute', width: '25%', left: '0' }} alt="NEW" />)
+                  : (<div />)}
+
+                <img src={post.pictures} style={{ height: '18rem', objectFit: 'cover' }} alt={post.name} />
+                <div className="card-body p-0">
+                  <h5 className="card-title text-center text-success">{post.name}</h5>
+                </div>
+                <div>
+                  <RaitingPrduct raitingProductValue={getRaitnigProduct(post.reviews)} />
+                </div>
+                <div className="text-center text-success">
+                  {post.wight ? (<h6>{`Цена за ${post.wight}`}</h6>) : (<h6>Цена за штуку</h6>)}
+                </div>
+                <div className="d-flex justify-content-center">
+                  <h5 className="card-text text-center p-3 text-dark">
+                    {post.price}
+                    ₽
+                  </h5>
+                  {post.discount
+                    ? (
+                      <h5 className="p-3 text-decoration-line-through text-danger position-relative">
+                        (
+                        {getPriceProduct(post._id)}
+                        ₽)
+                        <span className="position-absolute top-10 start-100 translate-middle badge rounded-pill bg-danger">
+                          -
+                          {post.discount}
+                          %
+                        </span>
+                      </h5>
+                    )
+                    : <div />}
+                </div>
+              </Link>
+              {countId(post._id) < 1
+                ? (
+                  <button type="button" onClick={() => dispatch(addInCart(post._id))} className="btn btn-success position-relative bottom-0">В корзину</button>)
+                : (
+                  <button type="button" onClick={() => dispatch(deleteProductFromCart(post._id))} className="btn btn-success position-relative">
+                    В корзине
+                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                      <FaShoppingBasket size="20" />
+                    </span>
+                  </button>
+                )}
+            </div>
+
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   )
 }

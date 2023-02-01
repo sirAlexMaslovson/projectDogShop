@@ -46,7 +46,7 @@ export function FormAuthorization() {
     .then(() => sessionStorage.clear())
     .then(() => navigate('/'))
 
-  const { mutate } = useMutation({
+  const { mutate, isError, error } = useMutation({
     mutationFn: postValuesAuthorization,
   })
 
@@ -74,6 +74,15 @@ export function FormAuthorization() {
               <h5>Вы успешно зарегистрировались!</h5>
             </div>
           ) : <div />}
+
+          {isError
+            ? (
+              <div className="alert alert-danger text-center" role="alert">
+                <h5>{error.toString()}</h5>
+              </div>
+            )
+            : <div />}
+
           <div className={`d-flex justify-content-center align-items-center flex-column ${formStyles.formikForm}`}>
             <h5 className="text-center mb-3">Пройдите авторизацию</h5>
             <p className="text-center">

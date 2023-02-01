@@ -15,6 +15,7 @@ import { UserInfo } from './components/UserInfo/UserInfo'
 import { store } from './redux/store'
 import { CartPage } from './components/CartPage/CartPage'
 import { DetailCardPage } from './components/DetailCardPage/DetailCardPage'
+import { FavoritesPage } from './components/FavoritesPage/FavoritesPage'
 // import { SearchPage } from './components/Search/Search'
 
 const queryClient = new QueryClient()
@@ -46,7 +47,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'favorites/',
-        element: <Main />,
+        element: <FavoritesPage />,
       },
       {
         path: 'products/:id',

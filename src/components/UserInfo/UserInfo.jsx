@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { FaEdit } from 'react-icons/fa'
-import { REDUX_LOCAL_STORAGE_KEY_DOG_FOOD } from '../../redux/initState'
 import { deleteSort } from '../../redux/slices/methodSortSlice/methodSortSlice'
 import { nullSearch } from '../../redux/slices/searchSlice/searchSlice'
 import { FormAddProduct } from '../FormAddProduct/FormAddProduct'
@@ -14,6 +13,7 @@ import { api } from '../helpers/Api'
 import { Modal } from '../RegistrationModal/RegisrtationModal'
 import formStyles from './styles.module.css'
 import { FormRedMyAvatar } from '../FormRedMyAvatar/FormRedMyAvatar'
+import { deleteToken } from '../../redux/slices/tokenSlice/tokenSlice'
 
 export const USER_INFO = 'user_info'
 
@@ -58,7 +58,7 @@ export function UserInfo() {
 
   const clickHandlerOut = (e) => {
     if (e.target === e.currentTarget) {
-      localStorage.removeItem(REDUX_LOCAL_STORAGE_KEY_DOG_FOOD)
+      dispatch(deleteToken())
       navigate('/signin')
     }
   }

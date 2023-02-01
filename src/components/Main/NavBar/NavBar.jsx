@@ -8,7 +8,7 @@ export function NavBar() {
   const dispatch = useDispatch()
 
   return (
-    <ul className="nav justify-content-center align-items-center">
+    <ul className="nav justify-content-center align-items-center bg-warning-subtle">
       <li className="nav-item">
         <h5>сортировка:</h5>
       </li>

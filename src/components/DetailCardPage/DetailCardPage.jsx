@@ -46,7 +46,7 @@ export function DetailCardPage() {
     api.setNewToken(TOKEN)
     api.setNewGroup(myGroup)
     api.setNewIdCard(id)
-  }, [])
+  }, [TOKEN])
 
   const { data, isLoading, isError } = useQuery({
     queryKey: [CART_INFO],
@@ -87,7 +87,7 @@ export function DetailCardPage() {
             <button type="button" onClick={() => dispatch(addInCart(data._id))} className="btn btn-success position-relative bottom-0">В корзину</button>)
           : (
             <button type="button" onClick={() => dispatch(deleteProductFromCart(data._id))} className="btn btn-success position-relative">
-              В корзину
+              В корзине
               <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                 <FaShoppingBasket size="20" />
               </span>

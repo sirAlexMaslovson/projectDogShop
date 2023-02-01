@@ -18,41 +18,35 @@ class Api {
     this.idCard = newIdCard
   }
 
-  registration(values) {
-    return fetch(`${this.baseUrl}/signup`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(values),
+  registration = (values) => fetch(`${this.baseUrl}/signup`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(values),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.name) {
+        return data
+      }
+      throw new Error(data.message)
     })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.name) {
-          return data
-        }
-        throw new Error(data.message)
-      })
-      .catch(alert)
-  }
 
-  authorization(values) {
-    return fetch(`${this.baseUrl}/signin`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(values),
+  authorization = (values) => fetch(`${this.baseUrl}/signin`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(values),
+  })
+    .then((response) => response.json())
+    .then((datas) => {
+      if (datas.data) {
+        return datas
+      }
+      throw new Error(datas.message)
     })
-      .then((response) => response.json())
-      .then((datas) => {
-        if (datas.data) {
-          return datas
-        }
-        throw new Error(datas.message)
-      })
-      .catch(alert)
-  }
 
   getAllProducts = () => fetch(`${this.baseUrl}/products`, {
     method: 'GET',
@@ -70,6 +64,12 @@ class Api {
       'Content-Type': 'application/json',
     },
   }).then((response) => response.json())
+    .then((datas) => {
+      if (!datas.message) {
+        return datas
+      }
+      throw new Error(datas.message)
+    })
 
   // eslint-disable-next-line class-methods-use-this
   getProductsByIds = (ids) => Promise.all(ids.map((id) => fetch(`${this.baseUrl}/products/${id}`, {
@@ -79,7 +79,13 @@ class Api {
       'Content-Type': 'application/json',
     },
   })
-    .then((response) => response.json())))
+    .then((response) => response.json())
+    .then((datas) => {
+      if (!datas.message) {
+        return datas
+      }
+      throw new Error(datas.message)
+    })))
 
   getProductsSearchQuery = (value) => fetch(`${this.baseUrl}/products/search?query=${value}`, {
     method: 'GET',
@@ -88,6 +94,12 @@ class Api {
       'Content-Type': 'application/json',
     },
   }).then((response) => response.json())
+    .then((datas) => {
+      if (!datas.message) {
+        return datas
+      }
+      throw new Error(datas.message)
+    })
 
   getCardById = () => fetch(`${this.baseUrl}/products/${this.idCard}`, {
     method: 'GET',
@@ -96,6 +108,12 @@ class Api {
       'Content-Type': 'application/json',
     },
   }).then((response) => response.json())
+    .then((datas) => {
+      if (!datas.message) {
+        return datas
+      }
+      throw new Error(datas.message)
+    })
 
   doCommentById = (id, value) => fetch(`${this.baseUrl}/products/review/${id}`, {
     method: 'POST',
@@ -105,6 +123,12 @@ class Api {
     },
     body: JSON.stringify(value),
   })
+    .then((datas) => {
+      if (!datas.message) {
+        return datas
+      }
+      throw new Error(datas.message)
+    })
 
   getProductReviews = (id) => fetch(`${this.baseUrl}/products/review/${id}`, {
     method: 'GET',
@@ -113,6 +137,12 @@ class Api {
       'Content-Type': 'application/json',
     },
   }).then((response) => response.json())
+    .then((datas) => {
+      if (!datas.message) {
+        return datas
+      }
+      throw new Error(datas.message)
+    })
 
   doLikeIn = (id) => fetch(`${this.baseUrl}/products/likes/${id}`, {
     method: 'PUT',
@@ -146,12 +176,12 @@ class Api {
     },
     body: JSON.stringify(values),
   }).then((response) => response.json())
-    .then((data) => {
-      if (data.name) {
-        return data
+    .then((datas) => {
+      if (!datas.message) {
+        return datas
       }
-      throw new Error(data.message)
-    }).catch(alert)
+      throw new Error(datas.message)
+    })
 
   editUserAvatar = (value) => fetch(`${this.baseUrl}/v2/${this.group}/users/me/avatar`, {
     method: 'PATCH',
@@ -161,12 +191,12 @@ class Api {
     },
     body: JSON.stringify({ avatar: value }),
   }).then((response) => response.json())
-    .then((data) => {
-      if (data.name) {
-        return data
+    .then((datas) => {
+      if (!datas.message) {
+        return datas
       }
-      throw new Error(data.message)
-    }).catch(alert)
+      throw new Error(datas.message)
+    })
 
   postMyProduct = (values) => fetch(`${this.baseUrl}/products`, {
     method: 'POST',
@@ -176,12 +206,12 @@ class Api {
     },
     body: JSON.stringify(values),
   }).then((response) => response.json())
-    .then((data) => {
-      if (data.name) {
-        return data
+    .then((datas) => {
+      if (!datas.message) {
+        return datas
       }
-      throw new Error(data.message)
-    }).catch(alert)
+      throw new Error(datas.message)
+    })
 
   editMyProduct = (id, values) => fetch(`${this.baseUrl}/products/${id}`, {
     method: 'PATCH',

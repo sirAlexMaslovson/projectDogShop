@@ -6,6 +6,13 @@
    object-fit: cover; 
 }
 
+.cartLow {
+   height: 100vh;
+   width: 100vw;
+   background-image: url(./1613689641_10-p-fon-dlya-prezentatsii-biologiya-zhivotnie-10.jpg);
+   object-fit: cover; 
+}
+
 .cartEmpty {
 
     height: 100vh;

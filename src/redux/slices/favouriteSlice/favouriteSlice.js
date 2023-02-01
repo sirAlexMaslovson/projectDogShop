@@ -12,7 +12,7 @@ const favouriteSlice = createSlice({
     },
 
     deleteFavourite(state, action) {
-      return state.filter((card) => card._id !== action.payload)
+      return state.filter((card) => card !== action.payload)
     },
 
   },

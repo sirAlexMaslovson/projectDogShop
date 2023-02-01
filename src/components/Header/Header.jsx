@@ -68,10 +68,14 @@ export function Header() {
             <Link to="/favorites">
               <div type="button" className="position-relative">
                 <FaHeart size="40" onClick={() => dispatch(sortByMyFavorite())} style={{ color: 'red' }} />
-                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
-                  {favourite.length}
-                  <span className="visually-hidden">unread messages</span>
-                </span>
+                {favourite.length > 0 ? (
+                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {favourite.length}
+                    <span className="visually-hidden">unread messages</span>
+                  </span>
+                ) : (
+                  <div />
+                )}
               </div>
             </Link>
             <Link to={`/cart/${myUser.id}`}>
