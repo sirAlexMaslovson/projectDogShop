@@ -90,8 +90,8 @@ export function UserInfo() {
         </div>
 
         <div className="container text-center pt-3">
-          <img src={data.avatar} alt="Аватар" style={{ height: '30vh', borderRadius: '20px' }} />
-          <div type="button" className="position-absolute fs-3 text-primary" style={{ right: '25rem', top: '14rem' }}>
+          <img src={data.avatar} alt="Аватар" style={{ height: '30vh', width: '20vw', borderRadius: '20px' }} />
+          <div type="button" className="position-absolute fs-3 text-primary" style={{ right: '50rem', top: '16rem' }}>
             <FaEdit onClick={openModalRedMyAvavtar} />
           </div>
         </div>
