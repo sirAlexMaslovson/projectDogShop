@@ -17,7 +17,7 @@ import {
   SORT_BY_ABC, SORT_BY_COST, SORT_BY_DISCOUNT, SORT_BY_MY_PRODUCT,
 } from '../../redux/slices/methodSortSlice/methodSortConstants'
 import { addFavourite, deleteFavourite } from '../../redux/slices/favouriteSlice/favouriteSlice'
-import { deleteSort } from '../../redux/slices/methodSortSlice/methodSortSlice'
+// import { deleteSort } from '../../redux/slices/methodSortSlice/methodSortSlice'
 import { RaitingPrduct } from './RaitingProduct/RaitingProduct'
 
 export const ALL_PRODUCTS = 'all_products'
@@ -54,7 +54,7 @@ export function Main() {
       navigate('/signin')
     } else {
       api.setNewToken(TOKEN)
-      dispatch(deleteSort())
+    //  dispatch(deleteSort())
     }
   }, [TOKEN])
 
