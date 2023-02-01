@@ -35,7 +35,7 @@ export function FormAddProduct({ closeModal }) {
           .required(REQUIRED_ERROR_MESSAGE_PRODUCT),
         name: Yup.string()
           .min(2, 'Укажите минимум два символа')
-          .max(20, 'Не более 20 символов')
+          .max(40, 'Не более 40 символов')
           .required(REQUIRED_ERROR_MESSAGE_PRODUCT),
         price: Yup.number()
           .min(2, 'Не менее 20 символов')
@@ -46,11 +46,9 @@ export function FormAddProduct({ closeModal }) {
           .required(REQUIRED_ERROR_MESSAGE_PRODUCT),
         discount: Yup.number()
           .min(1, 'Укажите минимум один символ')
-          .max(2, 'Не более 2 символов')
           .required(REQUIRED_ERROR_MESSAGE_PRODUCT),
         stock: Yup.number()
           .min(1, 'Укажите минимум один символ')
-          .max(5, 'Не более 5 символов')
           .required(REQUIRED_ERROR_MESSAGE_PRODUCT),
         description: Yup.string()
           .min(2, 'Не менее 20 символов')

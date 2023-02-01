@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import { useParams } from 'react-router-dom'
 import { api } from '../../helpers/Api'
+import { RaitingPrduct } from '../../Main/RaitingProduct/RaitingProduct'
 
 export const PRODUCT_REWIEWS_KEY = ['PRODUCT_REWIEWS_KEY']
 
@@ -15,6 +16,8 @@ export function AddCommentBlock() {
 
   const [commentInput, setCommentInput] = useState('')
 
+  const [commentRaiting, setCommentRaiting] = useState('5')
+
   const queryClient = useQueryClient()
 
   const changePostInputHandler = (e) => {
@@ -22,6 +25,7 @@ export function AddCommentBlock() {
   }
 
   const objComment = {
+    rating: commentRaiting,
     text: commentInput.toString(),
   }
 
@@ -35,10 +39,7 @@ export function AddCommentBlock() {
     onSuccess: () => queryClient.invalidateQueries(PRODUCT_REWIEWS_KEY.concat(id)),
   })
 
-  const deleteMyComment = (idProduct, idComment) => {
-    console.log(`Вызов в функции queryFn: ${idProduct}, ${idComment}`)
-    api.deleteCommentById(idProduct, idComment)
-  }
+  const deleteMyComment = (idComment) => api.deleteCommentById(id, idComment)
 
   const { mutate: deleteComment } = useMutation({
     mutationFn: deleteMyComment,
@@ -65,6 +66,31 @@ export function AddCommentBlock() {
       <div className="p-3">
         <h5>Оставить свой комментарий</h5>
         <nav className="navbar bg-body-tertiary">
+
+          <div className="form-check form-check-inline">
+            <h5>Поставьте свою оценку:</h5>
+          </div>
+          <div className="form-check form-check-inline">
+            <input className="form-check-input" type="radio" onClick={() => setCommentRaiting('1')} name="inlineRadioOptions" id="inlineRadio1" value="option1" />
+            <p>1</p>
+          </div>
+          <div className="form-check form-check-inline">
+            <input className="form-check-input" type="radio" onClick={() => setCommentRaiting('2')} name="inlineRadioOptions" id="inlineRadio2" value="option2" />
+            <p>2</p>
+          </div>
+          <div className="form-check form-check-inline">
+            <input className="form-check-input" type="radio" onClick={() => setCommentRaiting('3')} name="inlineRadioOptions" id="inlineRadio3" value="option3" />
+            <p>3</p>
+          </div>
+          <div className="form-check form-check-inline">
+            <input className="form-check-input" type="radio" onClick={() => setCommentRaiting('4')} name="inlineRadioOptions" id="inlineRadio4" value="option4" />
+            <p>4</p>
+          </div>
+          <div className="form-check form-check-inline">
+            <input className="form-check-input" type="radio" onClick={() => setCommentRaiting('5')} name="inlineRadioOptions" id="inlineRadio5" value="option5" />
+            <p>5</p>
+          </div>
+
           <div className="container-fluid">
             <form className="d-flex" role="search" style={{ width: '100%' }}>
               <input className="form-control me-2" type="input" value={commentInput} onChange={changePostInputHandler} placeholder="комметарий" aria-label="Search" />
@@ -79,17 +105,14 @@ export function AddCommentBlock() {
         <div className="pb-3" key={crypto.randomUUID()}>
           <div className="alert alert-info p-0 d-flex" role="alert">
             <div className="p-2 w-100">
+              <RaitingPrduct raitingProductValue={post.rating} />
               <h5>{post.text}</h5>
               <p>
                 {`Автор: ${post.author.name}  (${post.created_at.substring(0, 10)})`}
               </p>
             </div>
             <div type="button" className="p-2 flex-shrink-1 text-danger" style={{ fontSize: '2rem' }}>
-              <RiDeleteBin6Line onClick={() => {
-                deleteComment(post.product, post._id)
-                console.log(`вызов в onClick: ${post.product}, ${post._id}`)
-              }}
-              />
+              <RiDeleteBin6Line onClick={() => deleteComment(post._id)} />
             </div>
           </div>
         </div>
@@ -99,6 +122,7 @@ export function AddCommentBlock() {
       {allCommentsUsers().map((post) => (
         <div key={crypto.randomUUID()}>
           <div className="alert alert-success p-0" role="alert">
+            <RaitingPrduct raitingProductValue={post.rating} />
             <h5>{post.text}</h5>
             <p>
               {`Автор: ${post.author.name}  (${post.created_at.substring(0, 10)})`}

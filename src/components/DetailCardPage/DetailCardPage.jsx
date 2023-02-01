@@ -1,16 +1,18 @@
 /* eslint-disable no-underscore-dangle */
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Link, useNavigate, useParams,
 } from 'react-router-dom'
+import { FaArrowLeft, FaArrowRight, FaShoppingBasket } from 'react-icons/fa'
 import { FormEditProduct } from '../FormEditProduct/FormEditProduct'
 
 import { api } from '../helpers/Api'
 import { Modal } from '../RegistrationModal/RegisrtationModal'
 import { AddCommentBlock } from './CommentsBlock/AddCommentBlock'
 import formStyles from './styles.module.css'
+import { addInCart, deleteProductFromCart } from '../../redux/slices/cartSlice/cartSlice'
 
 export const CART_INFO = 'CART_INFO'
 
@@ -18,8 +20,9 @@ export function DetailCardPage() {
   const TOKEN = useSelector((store) => store.TOKEN)
   const myGroup = useSelector((store) => store.myUser.group)
   const myID = useSelector((store) => store.myUser._id)
+  const cart = useSelector((store) => store.cart)
   const navigate = useNavigate()
-
+  const dispatch = useDispatch()
   const [isModalEditProduct, setIsModalEditProduct] = useState(false)
 
   const openModalEditProduct = () => {
@@ -30,6 +33,14 @@ export function DetailCardPage() {
   }
 
   const { id } = useParams()
+
+  const countId = () => {
+    const objId = cart.find((post) => post.id === id)
+    if (!objId) {
+      return null
+    }
+    return objId.count
+  }
 
   useEffect(() => {
     api.setNewToken(TOKEN)
@@ -66,7 +77,23 @@ export function DetailCardPage() {
     <div className={`container text-center ${formStyles.card}`}>
 
       <div className="container d-flex justify-content-around p-5">
-        <Link to="/"><button type="button" className="btn btn-primary">На главную</button></Link>
+        <Link to="/">
+          <FaArrowLeft />
+          На главную
+        </Link>
+
+        {countId() < 1
+          ? (
+            <button type="button" onClick={() => dispatch(addInCart(data._id))} className="btn btn-success position-relative bottom-0">В корзину</button>)
+          : (
+            <button type="button" onClick={() => dispatch(deleteProductFromCart(data._id))} className="btn btn-success position-relative">
+              В корзину
+              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                <FaShoppingBasket size="20" />
+              </span>
+            </button>
+          )}
+
         {data.author._id === myID
           ? (
             <>
@@ -76,7 +103,10 @@ export function DetailCardPage() {
           )
           : <div />}
 
-        <Link to="/user"><button type="button" className="btn btn-primary">В профиль</button></Link>
+        <Link to="/user">
+          В профиль
+          <FaArrowRight />
+        </Link>
       </div>
 
       <div className="row">

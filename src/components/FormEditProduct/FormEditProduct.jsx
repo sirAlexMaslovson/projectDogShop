@@ -43,7 +43,6 @@ export function FormEditProduct({ closeModal, card }) {
           .required(REQUIRED_ERROR_MESSAGE_PRODUCT),
         price: Yup.number()
           .min(2, 'Не менее 20 символов')
-          .max(5, 'Не более 5 символов')
           .required(REQUIRED_ERROR_MESSAGE_PRODUCT),
         wight: Yup.string()
           .min(1, 'Укажите минимум один символ')
