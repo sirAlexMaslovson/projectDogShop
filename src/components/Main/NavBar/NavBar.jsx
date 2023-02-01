@@ -1,12 +1,22 @@
-// import { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useSearchParams } from 'react-router-dom'
 import {
   deleteSort, sortByABC, sortByCost, sortByDiscount, sortByMyProduct,
 } from '../../../redux/slices/methodSortSlice/methodSortSlice'
 
 export function NavBar() {
   const dispatch = useDispatch()
+  const myMethodSorting = useSelector((store) => store.methodSorting)
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  useEffect(() => {
+    setSearchParams({
+      sort: myMethodSorting,
+    })
+  }, [myMethodSorting])
+
+  console.log(searchParams)
 
   return (
     <ul className="nav justify-content-center align-items-center bg-warning-subtle">
