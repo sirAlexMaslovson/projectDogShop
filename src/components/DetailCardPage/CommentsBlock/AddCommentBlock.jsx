@@ -14,7 +14,7 @@ export function AddCommentBlock() {
 
   const myID = useSelector((store) => store.myUser._id)
 
-  const [commentInput, setCommentInput] = useState('')
+  const [commentInput, setCommentInput] = useState('test')
 
   const [commentRaiting, setCommentRaiting] = useState('5')
 
@@ -75,7 +75,7 @@ export function AddCommentBlock() {
 
       <div className="p-3">
         <h5>Оставить свой комментарий</h5>
-        <nav className="navbar bg-body-tertiary">
+        <nav className="navbar bg-body-tertiary bg-success-subtle">
 
           <div className="form-check form-check-inline">
             <h5>Поставьте свою оценку:</h5>
@@ -103,7 +103,7 @@ export function AddCommentBlock() {
 
           <div className="container-fluid">
             <form className="d-flex" role="search" style={{ width: '100%' }}>
-              <input className="form-control me-2" type="input" value={commentInput} onChange={changePostInputHandler} placeholder="комметарий" aria-label="Search" />
+              <input className="form-control me-2" type="input" onChange={changePostInputHandler} placeholder="комметарий" aria-label="Search" />
               <button className="btn btn-outline-success" type="submit" onClick={clickHandlerPostComment}>Отправить</button>
             </form>
           </div>
