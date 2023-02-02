@@ -5,7 +5,7 @@ export function Footer() {
     <footer className={`page-footer font-small ${formStyles.footer}`}>
 
       <div className="footer-copyright text-center py-3">
-        © 2020 Copyright
+        © 2023 Copyright
       </div>
 
     </footer>

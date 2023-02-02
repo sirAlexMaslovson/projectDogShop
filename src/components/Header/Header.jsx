@@ -79,7 +79,7 @@ export function Header() {
                 )}
               </div>
             </Link>
-            <Link to={`/cart/${myUser.id}`}>
+            <Link to={`/cart/${myUser._id}`}>
               <div type="button" className="position-relative">
                 <FaBoxOpen size="40" style={{ color: 'black' }} />
                 {cart.length > 0 ? (

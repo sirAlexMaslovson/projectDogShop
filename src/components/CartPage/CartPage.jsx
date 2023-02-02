@@ -147,13 +147,13 @@ export function CartPage() {
                         <h4 className="card-title">{post.name}</h4>
                         <p className="card-text">Количество</p>
                         <div className="d-flex justify-content-center">
-                          {countId(post._id) < post.stock
-                            ? (<button type="button" onClick={() => dispatch(incrementProduct(post._id))} className="btn btn-secondary">+</button>)
-                            : <div />}
-                          <p className="card-text p-3">{countId(post._id)}</p>
                           {countId(post._id) > 1
                             ? (<button type="button" onClick={() => dispatch(decrementProduct(post._id))} className="btn btn-secondary">-</button>)
                             : <button type="button" onClick={() => dispatch(deleteProductFromCart(post._id))} className="btn btn-secondary">-</button>}
+                          <p className="card-text p-3">{countId(post._id)}</p>
+                          {countId(post._id) < post.stock
+                            ? (<button type="button" onClick={() => dispatch(incrementProduct(post._id))} className="btn btn-secondary">+</button>)
+                            : <div />}
                         </div>
                         <button type="button" onClick={() => dispatch(deleteProductFromCart(post._id))} className="btn btn-danger">Удалить</button>
                         <div>
