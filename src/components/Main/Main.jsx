@@ -58,7 +58,9 @@ export function Main() {
     }
   }, [TOKEN])
 
-  const { data: posts, isLoading } = useQuery({
+  const {
+    data: posts, isLoading, isError, error, refetch,
+  } = useQuery({
     queryKey: [ALL_PRODUCTS, search],
     queryFn: () => api.getProductsSearchQuery(search),
   })
@@ -96,6 +98,15 @@ export function Main() {
   }
 
   if (isLoading) return <div>Load</div>
+
+  if (isError) {
+    return (
+      <div>
+        <h6>{error.toString()}</h6>
+        <button type="button" onClick={refetch} className="btn btn-success">refetch</button>
+      </div>
+    )
+  }
   if (!posts.length) {
     return (
       <div className={`text-center ${formStyles.pageMainLow}`}>

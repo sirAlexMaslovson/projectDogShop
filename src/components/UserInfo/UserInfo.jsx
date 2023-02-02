@@ -71,13 +71,22 @@ export function UserInfo() {
     }
   }
 
-  const { data, isLoading, isError } = useQuery({
+  const {
+    data, isLoading, isError, error, refetch,
+  } = useQuery({
     queryKey: [USER_INFO],
     queryFn: api.getUserInfo,
   })
 
   if (isLoading) return <div>Load</div>
-  if (isError) return <div>ошибка авторизации</div>
+  if (isError) {
+    return (
+      <div>
+        <h6>{error.toString()}</h6>
+        <button type="button" onClick={refetch} className="btn btn-success">refetch</button>
+      </div>
+    )
+  }
 
   return (
     <>

@@ -48,14 +48,14 @@ class Api {
       throw new Error(datas.message)
     })
 
-  getAllProducts = () => fetch(`${this.baseUrl}/products`, {
+  /* getAllProducts = () => fetch(`${this.baseUrl}/products`, {
     method: 'GET',
     headers: {
       authorization: `Bearer ${this.token}`,
       'Content-Type': 'application/json',
     },
   }).then((response) => response.json())
-    .then((data) => data.products)
+    .then((data) => data.products) */
 
   getUserInfo = () => fetch(`${this.baseUrl}/v2/${this.group}/users/me`, {
     method: 'GET',

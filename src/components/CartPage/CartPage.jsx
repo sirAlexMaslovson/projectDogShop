@@ -38,7 +38,9 @@ export function CartPage() {
     api.setNewToken(TOKEN)
   }, [TOKEN])
 
-  const { data: products, isLoading } = useQuery({
+  const {
+    data: products, isLoading, isError, error, refetch,
+  } = useQuery({
     queryKey: getCartItemQueryKey(cartMapID()),
     queryFn: () => api.getProductsByIds(cartMapID()),
   })
@@ -79,6 +81,14 @@ export function CartPage() {
   }
 
   if (isLoading) return <div className={formStyles.cart}>Load</div>
+  if (isError) {
+    return (
+      <div>
+        <h6>{error.toString()}</h6>
+        <button type="button" onClick={refetch} className="btn btn-success">refetch</button>
+      </div>
+    )
+  }
   if (!products.length) {
     return (
       <div className={`d-flex justify-content-center ${formStyles.cartEmpty}`}>

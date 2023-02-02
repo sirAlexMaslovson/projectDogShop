@@ -48,7 +48,9 @@ export function DetailCardPage() {
     api.setNewIdCard(id)
   }, [TOKEN])
 
-  const { data, isLoading, isError } = useQuery({
+  const {
+    data, isLoading, isError, error, refetch,
+  } = useQuery({
     queryKey: [CART_INFO],
     queryFn: api.getCardById,
   })
@@ -63,7 +65,14 @@ export function DetailCardPage() {
   })
 
   if (isLoading) return <div>Load</div>
-  if (isError) return <div>ошибка авторизации</div>
+  if (isError) {
+    return (
+      <div>
+        <h6>{error.toString()}</h6>
+        <button type="button" onClick={refetch} className="btn btn-success">refetch</button>
+      </div>
+    )
+  }
 
   const getRaitingProducts = () => {
     const newObjRaiting = data.reviews.map((post) => post.rating)

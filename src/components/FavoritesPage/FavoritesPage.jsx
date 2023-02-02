@@ -16,12 +16,22 @@ export function FavoritesPage() {
     api.setNewToken(TOKEN)
   }, [TOKEN])
 
-  const { data, isLoading } = useQuery({
+  const {
+    data, isLoading, isError, error, refetch,
+  } = useQuery({
     queryKey: [MY_FAVOURITE_PRODUCTS],
     queryFn: () => api.getProductsByIds(favourite),
   })
 
   if (isLoading) return <div>Load</div>
+  if (isError) {
+    return (
+      <div>
+        <h6>{error.toString()}</h6>
+        <button type="button" onClick={refetch} className="btn btn-success">refetch</button>
+      </div>
+    )
+  }
   if (!data.length) {
     return (
       <div className={formStyles.pageFavorites}>

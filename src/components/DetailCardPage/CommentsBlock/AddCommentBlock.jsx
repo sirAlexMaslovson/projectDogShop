@@ -29,7 +29,9 @@ export function AddCommentBlock() {
     text: commentInput.toString(),
   }
 
-  const { data: reviews, isLoading } = useQuery({
+  const {
+    data: reviews, isLoading, isError, error, refetch,
+  } = useQuery({
     queryKey: PRODUCT_REWIEWS_KEY.concat(id),
     queryFn: () => api.getProductReviews(id),
   })
@@ -47,6 +49,14 @@ export function AddCommentBlock() {
   })
 
   if (isLoading) return <div>Load</div>
+  if (isError) {
+    return (
+      <div>
+        <h6>{error.toString()}</h6>
+        <button type="button" onClick={refetch} className="btn btn-success">refetch</button>
+      </div>
+    )
+  }
 
   const myComments = () => reviews.filter((post) => post.author._id === myID)
 
