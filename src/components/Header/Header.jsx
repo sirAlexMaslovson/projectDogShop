@@ -48,10 +48,7 @@ export function Header() {
   }
 
   return (
-    <header style={{
-      position: 'fixed', right: '0', left: '0', zIndex: '7',
-    }}
-    >
+    <header>
 
       <div
         className={`d-flex justify-content-around align-items-center pt-3 pb-3 ${formStyles.header}`}

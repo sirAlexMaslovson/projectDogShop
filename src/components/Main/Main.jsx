@@ -40,6 +40,8 @@ export function Main() {
 
   const queryClient = useQueryClient()
 
+  const navigate = useNavigate()
+
   const countId = (id) => {
     const objId = cart.find((post) => post.id === id)
     if (!objId) {
@@ -48,7 +50,6 @@ export function Main() {
     return objId.count
   }
 
-  const navigate = useNavigate()
   useEffect(() => {
     if (!TOKEN) {
       navigate('/signin')
@@ -109,7 +110,7 @@ export function Main() {
   }
   if (!posts.length) {
     return (
-      <div className={`text-center ${formStyles.pageMainLow}`} style={{ paddingTop: '6.4rem' }}>
+      <div className={`text-center ${formStyles.pageMainLow}`}>
         <h4>{`По вашему поиску найдено: ${posts.length} ${getStrNumberSearch(posts.length)}`}</h4>
         <h5>is empty</h5>
       </div>
@@ -143,7 +144,7 @@ export function Main() {
   }
 
   return (
-    <div style={{ paddingTop: '6.4rem' }}>
+    <div>
       <NavBar />
       <div className={newArrayPosts().length > 4
         ? formStyles.pageMain

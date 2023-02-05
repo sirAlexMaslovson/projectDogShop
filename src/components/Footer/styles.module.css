@@ -1,8 +1,4 @@
 .footer {
-    position: sticky;
-    bottom: 0;
-    left: 0;
-    right: 0;
+
     background: #edd978;
-    z-index: 3;
 }

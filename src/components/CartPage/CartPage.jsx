@@ -119,7 +119,6 @@ export function CartPage() {
       className={products.length > 2 && products.length !== 0
         ? (`d-flex flex-column mb-3 ${formStyles.cart}`)
         : (`d-flex flex-column mb-3 ${formStyles.cartLow}`)}
-      style={{ paddingTop: '7rem' }}
     >
       <div className="d-flex justify-content-around p-3">
         <button type="button" onClick={clickHandlerMain} className="btn btn-primary">На главную</button>

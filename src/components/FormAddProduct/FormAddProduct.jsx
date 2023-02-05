@@ -2,15 +2,22 @@ import { useMutation } from '@tanstack/react-query'
 import {
   Field, Form, Formik, ErrorMessage,
 } from 'formik'
+import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
+import { useNavigate } from 'react-router-dom'
+import { sortByMyProduct } from '../../redux/slices/methodSortSlice/methodSortSlice'
 import { api } from '../helpers/Api'
 import formStyles from './modal.module.css'
 
 export function FormAddProduct({ closeModal }) {
   const REQUIRED_ERROR_MESSAGE_PRODUCT = 'Пожалуйста заполните обязательное поле'
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const addMyProduct = (values) => {
     api.postMyProduct(values)
+    dispatch(sortByMyProduct())
+    navigate('/')
     closeModal()
   }
 

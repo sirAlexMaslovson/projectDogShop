@@ -36,14 +36,14 @@ export function FavoritesPage() {
   }
   if (!data.length) {
     return (
-      <div className={formStyles.pageFavorites} style={{ paddingTop: '6.4rem' }}>
+      <div className={formStyles.pageFavorites}>
         <h5 className="text-center">is empty</h5>
       </div>
     )
   }
 
   return (
-    <div className={`pt-5 ${formStyles.pageFavorites}`}>
+    <div className={`${formStyles.pageFavorites}`}>
       <div className="container text-center pt-5">
         <div className="row row-cols-3">
 

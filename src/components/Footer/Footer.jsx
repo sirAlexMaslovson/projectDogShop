@@ -47,6 +47,13 @@ export function Footer() {
             </div>
           </div>
 
+          <div className="text-center">
+            © 2023 Copyright:
+            <a className="text-reset fw-bold" href="https://getbootstrap.com/">
+              Bootstrap.com
+            </a>
+          </div>
+
         </div>
       </div>
 
