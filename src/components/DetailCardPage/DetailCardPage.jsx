@@ -83,7 +83,7 @@ export function DetailCardPage() {
 
   return (
 
-    <div className={`container text-center ${formStyles.card}`}>
+    <div className={`container text-center ${formStyles.card}`} style={{ paddingTop: '6rem' }}>
 
       <div className="container d-flex justify-content-around p-5">
         <Link to="/">

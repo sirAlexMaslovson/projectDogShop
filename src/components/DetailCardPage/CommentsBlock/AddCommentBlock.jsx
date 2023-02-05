@@ -103,18 +103,21 @@ export function AddCommentBlock() {
 
           <div className="container-fluid">
             <form className="d-flex" role="search" style={{ width: '100%' }}>
-              <input className="form-control me-2" type="input" onChange={changePostInputHandler} placeholder="комметарий" aria-label="Search" />
+              <input className="form-control me-2" type="input" onChange={changePostInputHandler} placeholder="комментарий" aria-label="Search" />
               <button className="btn btn-outline-success" type="submit" onClick={clickHandlerPostComment}>Отправить</button>
             </form>
           </div>
         </nav>
       </div>
 
-      <h5 className="text-info-emphasis">Мои комментарии:</h5>
+      {myComments().length
+        ? <h5 className="text-info-emphasis">Мои комментарии:</h5>
+        : <div />}
+
       {myComments().map((post) => (
         <div className="pb-3" key={crypto.randomUUID()}>
           <div className="alert alert-info p-0 d-flex" role="alert">
-            <img src={post.author.avatar} className="flex-shrink-1 text-danger" alt={post.author.name} style={{ width: '7rem' }} />
+            <img src={post.author.avatar} className="flex-shrink-1 text-danger" alt={post.author.name} style={{ width: '9rem' }} />
             <div className="p-2 w-100">
               <RaitingPrduct raitingProductValue={post.rating} />
               <h5>{post.text}</h5>

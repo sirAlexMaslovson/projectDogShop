@@ -3,7 +3,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { FaBoxOpen, FaHeart } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux/es/exports'
 import { useEffect, useState } from 'react'
-import companyLogo from './kisspng-logo-dog-la-baule-escoublac-petplate-brand-5beda5be4ad450.3618153715423011183065.png'
+import companyLogo from './pngwing.com.png'
 import formStyles from './modal.module.css'
 import { useDebonce } from '../hooks/useDebonce'
 
@@ -48,7 +48,10 @@ export function Header() {
   }
 
   return (
-    <header>
+    <header style={{
+      position: 'fixed', right: '0', left: '0', zIndex: '7',
+    }}
+    >
 
       <div
         className={`d-flex justify-content-around align-items-center pt-3 pb-3 ${formStyles.header}`}
@@ -60,7 +63,6 @@ export function Header() {
           <Link to="/" onClick={() => getMainPage()} style={{ width: '20%' }}>
             <img src={companyLogo} style={{ width: '40%' }} alt="logo" />
           </Link>
-
           <input value={searchInput} onChange={changeInputHandler} style={{ width: '100%' }} />
         </div>
 

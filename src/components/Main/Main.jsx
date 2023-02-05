@@ -109,7 +109,7 @@ export function Main() {
   }
   if (!posts.length) {
     return (
-      <div className={`text-center ${formStyles.pageMainLow}`}>
+      <div className={`text-center ${formStyles.pageMainLow}`} style={{ paddingTop: '6.4rem' }}>
         <h4>{`По вашему поиску найдено: ${posts.length} ${getStrNumberSearch(posts.length)}`}</h4>
         <h5>is empty</h5>
       </div>
@@ -143,7 +143,7 @@ export function Main() {
   }
 
   return (
-    <>
+    <div style={{ paddingTop: '6.4rem' }}>
       <NavBar />
       <div className={newArrayPosts().length > 4
         ? formStyles.pageMain
@@ -222,6 +222,6 @@ export function Main() {
           ))}
         </div>
       </div>
-    </>
+    </div>
   )
 }

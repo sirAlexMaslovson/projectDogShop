@@ -66,11 +66,24 @@ export function CartPage() {
     return Math.round(objProduct.price * countId(id))
   }
 
+  const getPriceDiscount = (id) => {
+    const objProduct = products.find((post) => post._id === id)
+    return Math.round(
+      ((objProduct.price / ((100 - objProduct.discount) / 100)) - objProduct.price) * countId(id),
+    )
+  }
+
   const isAllProductsInPrice = () => cart.every((product) => product.inBay === true)
 
   const getTotalPriceBay = () => {
     const arrayAllPriceBay = cart.filter((card) => card.inBay !== false)
     const objAllPriceBay = arrayAllPriceBay.map((product) => getPriceProduct(product.id))
+    return objAllPriceBay.reduce((acc, number) => acc + number, 0)
+  }
+
+  const getTotalPriceDiscount = () => {
+    const arrayAllPriceBay = cart.filter((card) => card.inBay !== false)
+    const objAllPriceBay = arrayAllPriceBay.map((product) => getPriceDiscount(product.id))
     return objAllPriceBay.reduce((acc, number) => acc + number, 0)
   }
 
@@ -102,9 +115,11 @@ export function CartPage() {
   }
 
   return (
-    <div className={products.length > 4 && products.length !== 0
-      ? (`d-flex flex-column mb-3 ${formStyles.cart}`)
-      : (`d-flex flex-column mb-3 ${formStyles.cartLow}`)}
+    <div
+      className={products.length > 2 && products.length !== 0
+        ? (`d-flex flex-column mb-3 ${formStyles.cart}`)
+        : (`d-flex flex-column mb-3 ${formStyles.cartLow}`)}
+      style={{ paddingTop: '7rem' }}
     >
       <div className="d-flex justify-content-around p-3">
         <button type="button" onClick={clickHandlerMain} className="btn btn-primary">На главную</button>
@@ -173,6 +188,17 @@ export function CartPage() {
                             {getPriceProduct(post._id)}
                             ₽
                           </h5>
+                          {post.discount
+                            ? (
+                              <p>
+                                Скидка:
+                                {' '}
+                                {getPriceDiscount(post._id)}
+                                ₽
+                              </p>
+                            )
+                            : <div />}
+
                         </div>
                         <div className="form-check">
                           <label className="form-check-label" htmlFor="flexCheckDefault">
@@ -206,11 +232,23 @@ export function CartPage() {
             ))}
           </div>
           <div className="col-4 container p-5">
-            <h3 className="p-3">Сумма заказа</h3>
-            <h5 className="p-3">
+            <h2 className="p-3">Сумма заказа</h2>
+            <h3 className="p-1 text-decoration-underline">
               {getTotalPriceBay()}
               ₽
-            </h5>
+            </h3>
+            {getTotalPriceDiscount()
+              ? (
+                <>
+                  <h4 className="pt-5">Общая скидка</h4>
+                  <h5 className="p-3">
+                    {getTotalPriceDiscount()}
+                    ₽
+                  </h5>
+                </>
+              )
+              : <div />}
+
             <button type="button" className="btn btn-success m-5">Перейти к оформлению</button>
           </div>
         </div>

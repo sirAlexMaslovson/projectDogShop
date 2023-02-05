@@ -90,7 +90,7 @@ export function UserInfo() {
 
   return (
     <>
-      <div className={formStyles.pageInfo}>
+      <div className={formStyles.pageInfo} style={{ paddingTop: '5rem' }}>
         <div className="container d-flex justify-content-around p-5">
           <Link to="/"><button type="button" onClick={clickHandlerMain} className="btn btn-primary">На главную</button></Link>
           <button type="button" onClick={openModalAddProduct} className="btn btn-success">Добавить товар</button>
@@ -100,7 +100,7 @@ export function UserInfo() {
 
         <div className="container text-center pt-3">
           <img src={data.avatar} alt="Аватар" style={{ height: '30vh', width: '20vw', borderRadius: '20px' }} />
-          <div type="button" className="position-absolute fs-3 text-primary" style={{ right: '50rem', top: '16rem' }}>
+          <div type="button" className="position-absolute fs-3 text-primary" style={{ right: '50rem', top: '31.5rem' }}>
             <FaEdit onClick={openModalRedMyAvavtar} />
           </div>
         </div>
